@@ -1,0 +1,8 @@
+## Reset Migration
+
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+
+## Connec to docker mysql
+1) sudo docker exec -it <Name> for name check docker ps
+2) mysql -u name -p

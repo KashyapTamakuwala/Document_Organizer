@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+  #########################################################################
+  #                               DB                                      #
+  #########################################################################
+  mongodb:
+    image: mongo:4.4.0-rc7 ## mongodb version to use
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: documentorganizeradmin
+      MONGO_INITDB_ROOT_PASSWORD: documentorganizeradmin
+    volumes:
+      - ./nosql-data:/data/db
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - 27017:27017 ## port for the mongodbserver
+    networks:
+      - document-net
+
+  mysqldb:
+    image: mysql
+    # platform: linux/x86_64
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER=documentorganizeradmin
+      - MYSQL_PASSWORD=documentorganizeradmin
+      - MYSQL_ROOT_PASSWORD=mysqlrootpassword
+    volumes:
+      - ./sql-data:/var/lib/mysql
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - document-net
+
+web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/my_app_dir
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysqldb
+      - mongodb
+
+  #########################################################################
+  #                               NetWorks                                #
+  #########################################################################
+
+networks:
+  document-net:
