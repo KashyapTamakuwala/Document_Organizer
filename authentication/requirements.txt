@@ -1,0 +1,8 @@
+certifi==2022.12.7
+Django==2.2.5
+djangorestframework
+djangorestframework-simplejwt==4.4.0
+PyJWT==2.6.0
+pytz
+sqlparse
+wincertstore==0.2
