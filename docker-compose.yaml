@@ -26,6 +26,7 @@ services:
       - 3306:3306
     environment:
       - MYSQL_USER=documentorganizeradmin
+      - MYSQL_DATABASE=USER
       - MYSQL_PASSWORD=documentorganizeradmin
       - MYSQL_ROOT_PASSWORD=mysqlrootpassword
     volumes:
@@ -42,7 +43,7 @@ services:
     build: 
       context: ./authentication
       dockerfile: Dockerfile
-    command: bash -c "python3 ./authentication/manage.py makemigrations && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:8001"
+    command: bash -c "python3 ./authentication/check_db.py --service-name mysqldb --ip mysqldb --port 3306 && python3 ./authentication/manage.py makemigrations && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:8001"
     volumes:
       - .:/app
     ports:
@@ -62,3 +63,4 @@ services:
 
 networks:
   document-net:
+    driver: bridge
