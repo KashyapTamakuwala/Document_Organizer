@@ -5,7 +5,7 @@ services:
   #                               DB                                      #
   #########################################################################
   mongodb:
-    image: mongo:4.4.0-rc7 ## mongodb version to use
+    image: mongo:latest ## mongodb version to use
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: documentorganizeradmin

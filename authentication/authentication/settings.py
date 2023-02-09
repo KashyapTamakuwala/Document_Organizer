@@ -79,8 +79,8 @@ WSGI_APPLICATION = 'authentication.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'document_organizer_mysqldb_1',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'USER',
         'USER': 'documentorganizeradmin',
         'PASSWORD': 'documentorganizeradmin',
         'HOST': 'mysqldb',

@@ -1,8 +1,12 @@
-certifi==2022.12.7
-Django==2.2.5
+asgiref==3.6.0
+certifi
+Django==3.2.17
 djangorestframework
 djangorestframework-simplejwt==4.4.0
-PyJWT==2.6.0
-pytz
+mysqlclient
+PyJWT 
+PyMySQL==1.0.2
+pytz 
 sqlparse
+typing_extensions==4.4.0
 wincertstore==0.2
