@@ -4,19 +4,19 @@ services:
   #########################################################################
   #                               DB                                      #
   #########################################################################
-  mongodb:
-    image: mongo:latest ## mongodb version to use
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: documentorganizeradmin
-      MONGO_INITDB_ROOT_PASSWORD: documentorganizeradmin
-    volumes:
-      - ./nosql-data:/data/db
-      - ./db-init-scripts:/docker-entrypoint-initdb.d
-    ports:
-      - 27017:27017 ## port for the mongodbserver
-    networks:
-      - document-net
+  # mongodb:
+  #   image: mongo:latest ## mongodb version to use
+  #   restart: unless-stopped
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: documentorganizeradmin
+  #     MONGO_INITDB_ROOT_PASSWORD: documentorganizeradmin
+  #   volumes:
+  #     - ./nosql-data:/data/db
+  #     - ./db-init-scripts:/docker-entrypoint-initdb.d
+  #   ports:
+  #     - 27017:27017 ## port for the mongodbserver
+  #   networks:
+  #     - document-net
 
   mysqldb:
     image: mysql
