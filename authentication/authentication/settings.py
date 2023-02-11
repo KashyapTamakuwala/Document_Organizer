@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'USER',
         'USER': 'documentorganizeradmin',
-        'PASSWORD': 'documentorganizeradmin',
+        'PASSWORD': 'password',
         'HOST': 'mysqldb',
         'PORT': '3306'
     }   

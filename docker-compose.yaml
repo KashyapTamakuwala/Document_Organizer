@@ -9,7 +9,7 @@ services:
   #   restart: unless-stopped
   #   environment:
   #     MONGO_INITDB_ROOT_USERNAME: documentorganizeradmin
-  #     MONGO_INITDB_ROOT_PASSWORD: documentorganizeradmin
+  #     MONGO_INITDB_ROOT_PASSWORD: password
   #   volumes:
   #     - ./nosql-data:/data/db
   #     - ./db-init-scripts:/docker-entrypoint-initdb.d
@@ -27,8 +27,8 @@ services:
     environment:
       - MYSQL_USER=documentorganizeradmin
       - MYSQL_DATABASE=USER
-      - MYSQL_PASSWORD=documentorganizeradmin
-      - MYSQL_ROOT_PASSWORD=mysqlrootpassword
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=rootpassword
     volumes:
       - ./sql-data:/var/lib/mysql
       - ./db-init-scripts:/docker-entrypoint-initdb.d
@@ -43,7 +43,7 @@ services:
     build: 
       context: ./authentication
       dockerfile: Dockerfile
-    command: bash -c "python3 ./authentication/check_db.py --service-name mysqldb --ip mysqldb --port 3306 && python3 ./authentication/manage.py makemigrations && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:8001"
+    command: bash -c "python3 ./authentication/manage.py makemigrations && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:8001"
     volumes:
       - .:/app
     ports:
