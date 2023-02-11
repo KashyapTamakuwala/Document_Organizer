@@ -75,8 +75,13 @@ WSGI_APPLICATION = 'file_management.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'FILES',
+        'USER': 'documentorganizeradmin',
+        'PASSWORD': 'password',
+        'HOST': 'mongodb',
+        'PORT': '27017'
+        
     }
 }
 
