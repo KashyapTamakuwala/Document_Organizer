@@ -13,4 +13,3 @@ pytz
 sqlparse==0.2.4
 typing_extensions==4.4.0
 wincertstore==0.2
-

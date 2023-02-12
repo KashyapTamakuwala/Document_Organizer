@@ -10,6 +10,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: documentorganizeradmin
       MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: FILES
     volumes:
       - ./nosql-data:/data/db
       - ./db-init-scripts:/docker-entrypoint-initdb.d
@@ -51,6 +52,21 @@ services:
     restart: unless-stopped
     depends_on:
       - mysqldb
+    networks:
+      - document-net
+  
+  filemanagement_app:
+    build: 
+      context: ./file_management
+      dockerfile: Dockerfile
+    command: bash -c "python3 ./file_management/manage.py makemigrations && python3 ./file_management/manage.py migrate && python3 ./file_management/manage.py runserver 0.0.0.0:8002"
+    volumes:
+      - .:/app
+    ports:
+      - "8002:8002"
+    restart: unless-stopped
+    depends_on:
+      - mongodb
     networks:
       - document-net
   

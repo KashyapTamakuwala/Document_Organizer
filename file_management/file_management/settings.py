@@ -77,11 +77,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'FILES',
-        'USER': 'documentorganizeradmin',
-        'PASSWORD': 'password',
-        'HOST': 'mongodb',
-        'PORT': '27017'
-        
+        'client' :{
+            'username': 'documentorganizeradmin',
+            'PASSWORD': 'password',
+            'host': 'mongodb://mongodb:27017',
+            'PORT': '27017',
+            #'authSource': 'admin',
+            #'authMechanism': 'SCRAM-SHA-1',
+        }
     }
 }
 
