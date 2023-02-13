@@ -18,41 +18,41 @@ services:
     networks:
       - document-net
 
-  # mysqldb:
-  #   image: mysql
-  #   # platform: linux/x86_64
-  #   restart: unless-stopped
-  #   ports:
-  #     - 3306:3306
-  #   environment:
-  #     - MYSQL_USER=documentorganizeradmin
-  #     #- MYSQL_DATABASE=USER
-  #     - MYSQL_PASSWORD=password
-  #     - MYSQL_ROOT_PASSWORD=rootpassword
-  #   volumes:
-  #     - ./sql-data:/var/lib/mysql
-  #     - ./db-init-scripts:/docker-entrypoint-initdb.d
-  #   networks:
-  #     - document-net
+  mysqldb:
+    image: mysql
+    # platform: linux/x86_64
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER=documentorganizeradmin
+      #- MYSQL_DATABASE=USER
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    volumes:
+      - ./sql-data:/var/lib/mysql
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - document-net
 
   #########################################################################
   #                               Web API                                 #
   #########################################################################
 
-  # authentication_app:
-  #   build: 
-  #     context: ./authentication
-  #     dockerfile: Dockerfile
-  #   command: bash -c "python3 ./authentication/manage.py makemigrations && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:7001"
-  #   volumes:
-  #     - .:/app
-  #   ports:
-  #     - "7001:7001"
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - mysqldb
-  #   networks:
-  #     - document-net
+  authentication_app:
+    build: 
+      context: ./authentication
+      dockerfile: Dockerfile
+    command: bash -c "python3 ./authentication/manage.py makemigrations && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:7001"
+    volumes:
+      - .:/app
+    ports:
+      - "7001:7001"
+    restart: unless-stopped
+    depends_on:
+      - mysqldb
+    networks:
+      - document-net
   
   filemanagement_app:
     build: 
