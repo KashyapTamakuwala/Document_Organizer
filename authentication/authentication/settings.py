@@ -86,7 +86,7 @@ DATABASES = {
         'USER': 'documentorganizeradmin',
         'PASSWORD': 'password',
         'HOST': 'mysqldb',
-        'PORT': '3306'
+        'PORT': 3306,
     }   
 }
 

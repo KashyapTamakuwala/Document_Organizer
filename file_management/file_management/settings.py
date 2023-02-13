@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'file_management',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -76,15 +79,14 @@ WSGI_APPLICATION = 'file_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'FILES',
-        'client' :{
-            'username': 'documentorganizeradmin',
-            'PASSWORD': 'password',
+        'NAME': 'File',
+        'CLIENT' : {
             'host': 'mongodb://mongodb:27017',
-            'PORT': '27017',
-            #'authSource': 'admin',
-            #'authMechanism': 'SCRAM-SHA-1',
+            'port': 27017,
+            'username':'documentorganizeradmin',
+            'PASSWORD':'password',
         }
+        
     }
 }
 
