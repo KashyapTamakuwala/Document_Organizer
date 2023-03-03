@@ -1,3 +1,5 @@
 CREATE DATABASE IF NOT EXISTS `USER`;
 
+CREATE DATABASE IF NOT EXISTS `File_Upload`;
+
 GRANT ALL PRIVILEGES ON *.* TO 'documentorganizeradmin'@'%';
