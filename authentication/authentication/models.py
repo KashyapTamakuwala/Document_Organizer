@@ -35,7 +35,6 @@ class UserData(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_superuser = models.BooleanField(default=False)
-    #user_id = models.BigAutoField(unique=True)
     objects = UserManager()
     
     USERNAME_FIELD = 'email'
