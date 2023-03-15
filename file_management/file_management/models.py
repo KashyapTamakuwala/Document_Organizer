@@ -22,8 +22,14 @@ class DataobjectForm(forms.ModelForm):
 
 class FolderDetails(models.Model):
     
-    id = models.BigAutoField(primary_key=True,default=1,null=False)
     User_id = models.BigIntegerField(null=False)
     Folder_Name = models.CharField(default='root' ,max_length=300)
     FileList = models.ArrayField(model_container=Dataobject,model_form_class=DataobjectForm)
     objects = models.DjongoManager()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['User_id','Folder_Name'],
+                                    name="Unique Folder Constraint"
+                                    )
+        ]

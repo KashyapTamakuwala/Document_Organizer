@@ -15,15 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from authentication.views import RegisterView
+from Users.views import Register
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('user/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('user/register',RegisterView.as_view(),name="Register"),
+    path('user/register',Register.as_view(),name="Register"),
+    #path('user/login',ObtainAuthToken.as_view(),name="Login"),
+    path('user/login',TokenObtainPairView.as_view(),name="Login"),
+    path('user/verify',TokenVerifyView.as_view(),name="Verification"),
+    path('user/refresh',TokenRefreshView.as_view(),name="Refersh Access Token")
+
 ]

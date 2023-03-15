@@ -18,6 +18,23 @@ services:
     networks:
       - document-net
 
+
+  # sqldbmine:
+  #   image: mysql
+  #   # platform: linux/x86_64
+  #   restart: unless-stopped
+  #   ports:
+  #     - 3307:3307
+  #   environment:
+  #     - MYSQL_USER=documentorganizeradmin
+  #     - MYSQL_PASSWORD=password
+  #     - MYSQL_ROOT_PASSWORD=rootpassword
+  #   volumes:
+  #     - ./sql-data-2:/var/lib/mysql
+  #     - ./db-init-scripts-2:/docker-entrypoint-initdb.d
+  #   networks:
+  #     - document-net
+
   mysqldb:
     image: mysql
     # platform: linux/x86_64
@@ -42,7 +59,7 @@ services:
     build: 
       context: ./authentication
       dockerfile: Dockerfile
-    command: bash -c "python3 ./authentication/manage.py makemigrations && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:7001"
+    command: bash -c "python3 ./authentication/manage.py makemigrations Users && python3 ./authentication/manage.py migrate && python3 ./authentication/manage.py runserver 0.0.0.0:7001"
     volumes:
       - .:/app
     ports:
@@ -85,6 +102,7 @@ services:
 
 
 
+
   #########################################################################
   #                               NetWorks                                #
   #########################################################################
@@ -92,3 +110,6 @@ services:
 networks:
   document-net:
     driver: bridge
+
+
+  

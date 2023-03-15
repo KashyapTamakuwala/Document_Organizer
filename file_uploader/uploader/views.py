@@ -25,7 +25,7 @@ class Files_APIView_Detail(APIView):
                 raise Http404
         else:
             try:
-                return File.objects.all().filter(user_id=pk).filter(name=name)
+                return File.objects.all().filter(user_id=pk,name=name)
             except  File.DoesNotExist:
                 raise Http404
     
@@ -63,9 +63,14 @@ class Files_APIView_Detail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
-        file = self.get_object(pk)
-        file.delete()
+    def delete(self, request, pk,name, format=None):
+        if name == None:
+            return Response("Provide a valid name",status=status.HTTP_404_NOT_FOUND)
+        file = self.get_object(pk,name)
+        if file.exists:
+            file.delete()
+        else:
+            return Response("Provide a valid name",status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     # keep only signle file upload in real project and make it async in file management
