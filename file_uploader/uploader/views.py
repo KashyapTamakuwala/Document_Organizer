@@ -3,12 +3,12 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from .serializers import FileSerializer
 from .models import File
 from rest_framework import status, permissions
 from django.http import Http404
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+import zipfile
 
 
     
@@ -33,7 +33,7 @@ class Files_APIView_Detail(APIView):
     def get(self, request, pk,name=None, format=None):
         ## check name and determine path.
         file = self.get_object(pk,name)
-        serializer = FileSerializer(file)  
+        # serializer = FileSerializer(file)  
         data=[]
         if len(file)==0:
             return Response("Not Found",status=status.HTTP_404_NOT_FOUND)
@@ -97,4 +97,31 @@ class Files_APIView_Detail(APIView):
             
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class File_Download_Api(APIView):
+
+    def get_object(self, pk,name=None): 
+        if name==None:
+            try:
+                return File.objects.all().filter(user_id=pk)
+            except File.DoesNotExist:
+                raise Http404
+        else:
+            try:
+                return File.objects.all().filter(user_id=pk,name=name)
+            except  File.DoesNotExist:
+                raise Http404
     
+    # search by userid    
+    def get(self, request, pk,name=None, format=None):
+        ## check name and determine path.
+        file = self.get_object(pk,name)
+        if len(file) == 0:
+            return Response("Not Found",status=status.HTTP_404_NOT_FOUND)
+        if len(file) == 1:
+            serializer=FileSerializer(file[0])
+            response =  Response(serializer.data['one_file'],content_type='application/pdf',status=status.HTTP_200_OK)
+        else:
+            response =  Response("Multiple_File",content_type='application/pdf',status=status.HTTP_404_NOT_FOUND)
+
+        return response
