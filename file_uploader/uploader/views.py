@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from django.http.response import HttpResponse
 # Create your views here.
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,6 +10,10 @@ from rest_framework import status, permissions
 from django.http import Http404
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 import zipfile
+import mimetypes
+import os
+from pathlib import Path
+from wsgiref.util import FileWrapper
 
 
     
@@ -111,17 +116,43 @@ class File_Download_Api(APIView):
                 return File.objects.all().filter(user_id=pk,name=name)
             except  File.DoesNotExist:
                 raise Http404
+
     
     # search by userid    
     def get(self, request, pk,name=None, format=None):
         ## check name and determine path.
         file = self.get_object(pk,name)
+        print(len(file))
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+        print(BASE_DIR)
         if len(file) == 0:
-            return Response("Not Found",status=status.HTTP_404_NOT_FOUND)
-        if len(file) == 1:
-            serializer=FileSerializer(file[0])
-            response =  Response(serializer.data['one_file'],content_type='application/pdf',status=status.HTTP_200_OK)
+            response = Response("Not Found",status=status.HTTP_404_NOT_FOUND)
+        elif len(file) == 1:
+            serializer = FileSerializer(file[0])
+            filename = serializer.data['name']
+            filepath = BASE_DIR + serializer.data['one_file']
+            mime_type, _ = mimetypes.guess_type(filepath)
+            response = HttpResponse(FileWrapper(open(filepath,'rb')), content_type=mime_type)
+            response['Content-Disposition'] = "attachment; filename=%s" % filename
         else:
-            response =  Response("Multiple_File",content_type='application/pdf',status=status.HTTP_404_NOT_FOUND)
+            filepathlist=[]
+            for f in file:
+                serializer = FileSerializer(f)
+                filepath = BASE_DIR + serializer.data['one_file']
+                filepathlist.append(filepath)
+            zipdestinationpath = BASE_DIR + '/media/document/{id:d}/out.zip'
+            zipdestinationpath=zipdestinationpath.format(id=pk)
+            with zipfile.ZipFile(zipdestinationpath,'w') as zipMe:
+                for file in filepathlist:
+                    zipMe.write(file,compress_type=zipfile.ZIP_DEFLATED)
+            zipMe.close()
+            mime_type, _ = mimetypes.guess_type(zipdestinationpath)
+           
+            response = HttpResponse(FileWrapper(open(zipdestinationpath,'rb')), content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename="{filename}.zip"'.format(
+                filename = "Out"
+            )
+            file_path = Path(zipdestinationpath)
+            file_path.unlink()
 
         return response
