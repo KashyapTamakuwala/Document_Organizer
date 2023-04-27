@@ -1,4 +1,4 @@
 nosql-data/
 sql-data/
 **/migrations/
-./web/package-lock.json
+web/package-lock.json
