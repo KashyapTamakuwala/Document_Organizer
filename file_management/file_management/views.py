@@ -6,6 +6,7 @@ from rest_framework import status, permissions
 from .models import FolderDetails
 import traceback
 import logging
+# import requests
 
 
 # view for registering users
@@ -79,7 +80,7 @@ class FolderAPI(APIView):
                     
 
                     ## Call file uploader api and category define api
-
+                    
                     ## upadate file list in parent folder
                     # contains bugs
                     lis.append({'File_id':1,

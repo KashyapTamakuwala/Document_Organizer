@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Header from '../components/header';
 import FolderCard from '../components/foldercard'
 import Grid from '@mui/material/Grid'
+//import DropzoneDialog from '../components/upload';
 
 // const sty = styled('div')(({ theme }) => ({
 //     display: 'flex',
