@@ -12,17 +12,17 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { validate as validateEmail } from 'email-validator';
-import register from '../api/register';
-// import toast from 'react-hot-toast';
-// import useCookie from 'react-use-cookie';
-// import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+
+import axios from 'axios';
 
 const theme = createTheme();
 
 export const Register = () => {
 
-  // const history = useHistory();
-  // const dispatch = useDispatch();
+  // eslint-disable-next-line
+  const history = useHistory();
+
   const [email, setEmail] = useState('');
   const [emailIsVisited, setEmailIsVisited] = useState(false);
   const [emailHasError, setEmailHasError] = useState(false);
@@ -30,7 +30,7 @@ export const Register = () => {
   const emailShouldShowError = !emailHasError && emailIsVisited;
 
   // eslint-disable-next-line no-unused-vars
-  // const [userToken, setUserToken] = useCookie('token', 0);
+
   const [password, setPassword] = useState('');
   const [passwordIsVisited, setPasswordIsVisited] = useState(false);
   const [passwordHasError, setPasswordHasError] = useState(false);
@@ -38,11 +38,6 @@ export const Register = () => {
   const passwordShouldShowError = !passwordHasError && passwordIsVisited;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/;
 
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [confirmPasswordHasError, setConfirmPasswordHasError] = useState(false);
-  const [confirmPasswordErrorText, setConfirmPasswordErrorText] = useState('');
-  const [confirmPasswordIsVisited, setConfirmPasswordIsVisited] = useState(false);
-  const confirmPasswordShouldShowError = confirmPasswordIsVisited && !confirmPasswordHasError
 
   const [firstName,setFirstName] = useState('')
   const [lastName,setLastName] = useState('')
@@ -55,13 +50,6 @@ export const Register = () => {
     setLastName(e.target.value)
   };
 
-  const onPassMatch = (original,secondary) => {
-    if(original===secondary){
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   const onEmailChange = (e) => {
     setEmail(e.target.value);
@@ -73,18 +61,6 @@ export const Register = () => {
     setPasswordHasError(passwordRegex.test(e.target.value));
   };
 
-  const onConfirmPasswordChange = (e) =>{
-    setConfirmPassword(e.target.value);
-    setConfirmPasswordHasError(onPassMatch(password,confirmPassword))
-  };
-
-  useEffect(() =>{
-    if(confirmPasswordShouldShowError){
-      setConfirmPasswordErrorText('Password Not Matching');
-    } else {
-      setConfirmPasswordErrorText('');
-    }
-  },[confirmPasswordShouldShowError]);
 
   useEffect(() => {
     if (passwordShouldShowError) {
@@ -107,23 +83,32 @@ export const Register = () => {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (emailShouldShowError || passwordShouldShowError || confirmPasswordShouldShowError){
+    if (emailShouldShowError || passwordShouldShowError){
       return;
     }
-    const payload = {
-      email: email,
-      first_name: firstName,
-      last_name: lastName,
-      password: password,
-      Confirm_Password:confirmPassword,
-    };
-    const response = register(payload);
-    console.log(response);
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    console.log("Making register request");
+    
+    const payload = new FormData();
+    payload.append( 'email', email);
+    payload.append('first_name', firstName);
+    payload.append('last_name', lastName);
+    payload.append('password', password);
+    payload.append('Confirm_Password',password);
+
+
+    axios.post('http://127.0.0.1:7001/user/register',payload)
+    .then( async (response) => {
+      if(response.status !== 201){
+        return;
+      };
+      console.log(response);
+      history.push('/');
+    })
+    .catch( (err) =>{ 
+      console.log(err);
+    })
+    
   };
 
   return (
@@ -200,22 +185,6 @@ export const Register = () => {
                   error = {passwordShouldShowError}
                   helperText = {passwordErrorText}
                   onBlur = {() => setPasswordIsVisited(true)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="Confirm Password"
-                  label="Confirm Password"
-                  type="password"
-                  id="Confirm Password"
-                  autoComplete="new-password"
-                  value = {confirmPassword}
-                  onChange = {onConfirmPasswordChange}
-                  error = {confirmPasswordShouldShowError}
-                  helperText = {confirmPasswordErrorText}
-                  onBlur = {() => setConfirmPasswordIsVisited(true)}
                 />
               </Grid>
             </Grid>

@@ -1,9 +1,9 @@
-import axiosInstance from '../config/axiosConfig';
+// import axiosInstance from '../config/axiosConfig';
 
-const register = async (payload) => axiosInstance('/user/register', {
-  method: 'POST',
-  data: payload,
-})
-  .then((response) => response);
+// const register = async (payload) => axiosInstance('/user/register', {
+//   method: 'POST',
+//   data: payload,
+// })
+//   .then((response) => response);
 
-export default register;
+// export default register;

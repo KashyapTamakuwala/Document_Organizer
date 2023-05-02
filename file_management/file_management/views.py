@@ -6,7 +6,11 @@ from rest_framework import status, permissions
 from .models import FolderDetails
 import traceback
 import logging
-# import requests
+import requests
+from requests_toolbelt.multipart.encoder import MultipartEncoder
+from mimetypes import MimeTypes
+
+mime = MimeTypes()
 
 
 # view for registering users
@@ -81,8 +85,25 @@ class FolderAPI(APIView):
 
                     ## Call file uploader api and category define api
                     
+                    fi  = request.FILES.getlist('Files')[0].read()
+                    print('data',fi)
+                    mime_type = mime.guess_type(request.FILES.getlist('Files')[0])
+                    mp_encoder = MultipartEncoder(
+                                        fields={
+                                            'name':request.FILES.getlist('Files')[0] , 
+                                            'user_id':request.data['User_id'],
+                                            # plain file object, no filename or mime type produces a
+                                            # Content-Disposition header with just the part name
+                                            'one_file': (request.FILES.getlist('Files')[0],request.FILES.getlist('Files')[0].read(), mime_type[0]),
+                                        }
+                                    )
+                    r = requests.post(
+                                        'http://0.0.0.0:7003//file/',
+                                        data=mp_encoder,  # The MultipartEncoder is posted as data, don't use files=...!
+                                        # The MultipartEncoder provides the content-type header with the boundary:
+                                        headers={'Content-Type': mp_encoder.content_type}
+                                    )
                     ## upadate file list in parent folder
-                    # contains bugs
                     lis.append({'File_id':1,
                                 'Name':request.data['Name'],
                                 'Path':"",

@@ -14,3 +14,5 @@ sqlparse==0.2.4
 typing_extensions==4.4.0
 wincertstore==0.2
 django-cors-headers
+requests==2.29.0
+requests-toolbelt==0.10.1

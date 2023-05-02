@@ -25,10 +25,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import Folder from '@mui/icons-material/Folder';
-import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
-
+// import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import ResponsiveDialog from './drop-file-input/dropdialog';
 
 const drawerWidth = 240;
+const iconsize = 30; 
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -205,25 +206,13 @@ export const Header = () => {
         <Divider />
 
         <List >
-          <ListItemButton
-            sx={{
-              minHeight: 48,
-              
-            }}
-            selected={selectedIndex === 0}
-            onClick={(event) => handleListItemClick(event, 0)}
-          >
-            <ListItemIcon>
-              <DriveFolderUploadIcon style={{fontSize:40}}  />
-            </ListItemIcon>
-            <ListItemText primary="Upload" />
-          </ListItemButton>
+          <ResponsiveDialog/> 
           <ListItemButton
             selected={selectedIndex === 1}
             onClick={(event) => handleListItemClick(event, 1)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:40}}/>
+              <Folder style={{fontSize:iconsize}}/>
             </ListItemIcon>
             <ListItemText primary="Book" />
           </ListItemButton>
@@ -233,7 +222,7 @@ export const Header = () => {
             onClick={(event) => handleListItemClick(event, 2)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:40}}/>
+              <Folder style={{fontSize:iconsize}}/>
             </ListItemIcon>
             <ListItemText primary="Resume" />
           </ListItemButton>
@@ -243,7 +232,7 @@ export const Header = () => {
             onClick={(event) => handleListItemClick(event, 3)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:40}}/>
+              <Folder style={{fontSize:iconsize}}/>
             </ListItemIcon>
             <ListItemText primary="Publication" />
           </ListItemButton>
@@ -253,7 +242,7 @@ export const Header = () => {
             onClick={(event) => handleListItemClick(event, 4)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:40}}/>
+              <Folder style={{fontSize:iconsize}}/>
             </ListItemIcon>
             <ListItemText primary="Legal Documents" />
           </ListItemButton>

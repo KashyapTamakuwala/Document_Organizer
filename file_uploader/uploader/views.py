@@ -81,7 +81,8 @@ class Files_APIView_Detail(APIView):
     # keep only signle file upload in real project and make it async in file management
     def post(self, request, format=None):
 
-
+        
+        print(request.data)
 
         serializer = FileSerializer(data=request.data)
         

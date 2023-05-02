@@ -1,4 +1,4 @@
-  import * as React from 'react';
+import React, { useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,18 +11,66 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import header from '../components/header';
+import { setCookie } from 'react-use-cookie';
+import { useHistory } from 'react-router';
+// import {toast} from 'react-hot-toast';
+
+import axios from 'axios';
 
 const theme = createTheme();
 
+
 export const Login = () => {
+
+  // eslint-disable-next-line
+  const history = useHistory();
+ 
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
+
+    console.log("Making request")
+
+    const payload = {
+      'email': email,
+      'password': password
+    }
+
+    axios.post('http://127.0.0.1:7001/user/login',payload)
+    .then( async (response) => {
+      if(response.status !== 200)
+      {
+        return;
+      };
+      setCookie('token', response.data.access, { path: '/' });
+      // toast.success("Success"); not working
+      
+      console.log("here");
+      history.push('/homepage');
+
+    })
+    .catch( (err) => {
+      // toast.error("Wrong Username or Password")
+      console.log(err);
     });
+
   };
 
   return (
@@ -54,6 +102,8 @@ export const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={onEmailChange}
             />
             <TextField
               margin="normal"
@@ -64,6 +114,8 @@ export const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={onPasswordChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

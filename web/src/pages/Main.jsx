@@ -5,16 +5,6 @@ import Box from '@mui/material/Box';
 import Header from '../components/header';
 import FolderCard from '../components/foldercard'
 import Grid from '@mui/material/Grid'
-//import DropzoneDialog from '../components/upload';
-
-// const sty = styled('div')(({ theme }) => ({
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'flex-end',
-//     padding: theme.spacing(0, 1),
-//     // necessary for content to be below app bar
-//     ...theme.mixins.toolbar,
-//   }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -26,6 +16,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   }));
 
 export const Main =() => {
+
+    
 
 return (
 
