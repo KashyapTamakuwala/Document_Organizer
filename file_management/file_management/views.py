@@ -59,7 +59,7 @@ class FolderAPI(APIView):
                         templist.append({'File_id':-1,
                                             'Name':request.data['Name'],
                                             'Path':"",
-                                            'Family':"Fo",
+                                            'Family':"Folder",
                                             'Category':"type1"})
                         updateparent.update(FileList=templist)
 
@@ -78,19 +78,20 @@ class FolderAPI(APIView):
                     
                     lis = fol.get().FileList
                     for i in lis:
-                        if i['Family']=='Fi' and i['Name']==request.data['Name']:
+                        if i['Family']=='File' and i['Name']==request.data['Name']:
                             return Response("Files exist",status=status.HTTP_409_CONFLICT)
                     
                     
 
                     ## Call file uploader api and category define api
+                    print(request.FILES.getlist('Files'))
                     
                     fi  = request.FILES.getlist('Files')[0].read()
                     print('data',fi)
-                    mime_type = mime.guess_type(request.FILES.getlist('Files')[0])
+                    mime_type = mime.guess_type(request.data['Name'])
                     mp_encoder = MultipartEncoder(
                                         fields={
-                                            'name':request.FILES.getlist('Files')[0] , 
+                                            'name':request.data['Name'] , 
                                             'user_id':request.data['User_id'],
                                             # plain file object, no filename or mime type produces a
                                             # Content-Disposition header with just the part name
@@ -107,7 +108,7 @@ class FolderAPI(APIView):
                     lis.append({'File_id':1,
                                 'Name':request.data['Name'],
                                 'Path':"",
-                                'Family':"Fi",
+                                'Family':"File",
                                 'Category':"type1"})
                     
                     fol.update(FileList=lis)
@@ -141,7 +142,7 @@ class FolderAPI(APIView):
                         ## created root folder with Update File list
                         updateparent = FolderDetails.objects.create(User_id=request.data['User_id'],
                                                             Folder_Name='root',
-                                                            FileList=[{'File_id':-1,'Name':request.data['Name'],'Path':"",'Family':"Fo",'Category':"type1"}]
+                                                            FileList=[{'File_id':-1,'Name':request.data['Name'],'Path':"",'Family':"Folder",'Category':"type1"}]
                                                             ) 
                         return Response("Succefull",status=status.HTTP_201_CREATED)
                     except Exception as e:
@@ -157,7 +158,7 @@ class FolderAPI(APIView):
                         ## created root folder with Update File list
                         createfile = FolderDetails.objects.create(User_id=request.data['User_id'],
                                                             Folder_Name='root',
-                                                            FileList=[{'File_id':1,'Name':request.data['Name'],'Path':"",'Family':"Fi",'Category':"type1"}]
+                                                            FileList=[{'File_id':1,'Name':request.data['Name'],'Path':"",'Family':"File",'Category':"type1"}]
                                                             ) 
                         return Response("Succefull",status=status.HTTP_201_CREATED)
                     except Exception as e:

@@ -4,7 +4,7 @@ import createHistory from "history/createBrowserHistory";
 import Login from '../pages/Login'
 import Register from "../pages/Register";
 import Main from '../pages/Main';
-import NotificationDialog from "../components/notification";
+import dD from "../components/drop-file-input/dropdialog";
 
 
 
@@ -19,7 +19,7 @@ export const AppRouter = () => (
         <Route path = "/" exact={true} component={Login}/>
         <Route path = "/register" component={Register}/>
         <Route path = "/homepage" component={Main}/>
-        <Route path = '/temp' component={NotificationDialog}/>
+        <Route path = '/temp' component={dD}/>
     </Switch>
 
     </Router>

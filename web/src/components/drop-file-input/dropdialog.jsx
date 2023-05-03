@@ -12,6 +12,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import axios from 'axios';
 
 export const ResponsiveDialog = () => {
   const [open, setOpen] = React.useState(false);
@@ -30,7 +31,26 @@ export const ResponsiveDialog = () => {
 
   const handleSave = () => {
     console.log("in handle close");
-    console.log(fileList);
+    var fielData = new FormData();
+    fielData.append('Name',fileList[0]['name']);
+    fielData.append("type",'File');
+    fielData.append('Parent_Folder',"root");
+    fielData.append("User_id",'1');
+    fielData.append('Files',fileList[0]);
+    
+    axios.post("http://127.0.0.1:7002/folder/",fielData)
+    .then( async (response) => {
+      console.log(response);
+      if(response.status !== 201){
+        return;
+      };
+      console.log(response);
+    })
+    .catch( (err) =>{ 
+      console.log(err);
+    })
+
+
     setOpen(false);
   };
   const handleClose = () => {

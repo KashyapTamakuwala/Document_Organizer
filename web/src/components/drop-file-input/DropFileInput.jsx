@@ -47,7 +47,7 @@ export const DropFileInput = props => {
                     <img src={uploadImg} alt="" />
                     <p>Drag & Drop your files here</p>
                 </div>
-                <input type="file" value="" onChange={onFileDrop}/>
+                <input type="file" webkitdirectory mozdirectory value="" onChange={onFileDrop}/>
             </div>
             {
                 fileList.length > 0 ? (
