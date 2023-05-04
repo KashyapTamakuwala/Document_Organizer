@@ -21,5 +21,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('folder/',FolderAPI.as_view()),
     path('folder/<int:pk>',FolderAPI.as_view()),
-    path('folder/<int:pk>/<str:fol>',FolderAPI.as_view()),
 ]

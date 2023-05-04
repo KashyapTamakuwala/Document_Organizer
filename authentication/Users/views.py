@@ -5,6 +5,8 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from Users.serializers import RegisterSerializer
 from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import AccessToken
 # Create your views here.
 
 class Register(generics.GenericAPIView):
@@ -19,6 +21,17 @@ class Register(generics.GenericAPIView):
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response("Invalid",status=status.HTTP_400_BAD_REQUEST)
+
+class Userid(APIView):
+    def post(self,request):
+        # print("Userid_get")
+        try:
+            token = request.data['token']
+            uid = AccessToken(token)['user_id']
+            return Response(uid,status=status.HTTP_200_OK)
+        except:
+            return Response("Not Found",status=status.HTTP_404_NOT_FOUND)
+
 # class Login(generics.GenericAPIView):
 #     serializer_class = RegisterSerializer
     

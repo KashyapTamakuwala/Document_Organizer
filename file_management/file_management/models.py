@@ -5,10 +5,13 @@ class Dataobject(models.Model):
     Name = models.CharField(max_length=200)
     Path = models.URLField()
     Family = models.CharField(max_length=2)
-    type1='type1'
-    type2='type2'
-    cat=((type1,type1),(type2,type2))
-    Category = models.CharField(max_length=255,choices=cat,default=type1)
+    type0 = 'None'
+    type1='Book'
+    type2='Resume'
+    type3='Publication'
+    type4='Legal Document'
+    cat=((type1,'Book'),(type2,'Resume'),(type3,'Publication'),(type4,'Legal Document'),(type0,'None'))
+    Category = models.CharField(max_length=255,choices=cat,default=type0)
 
     class Meta:
         abstract = True

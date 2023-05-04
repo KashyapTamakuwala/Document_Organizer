@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-zwj%(@fa@**bw#pu7m_k4j&&28%ock20vu0d3pq&+7(+6$iu2(
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1']
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -44,9 +44,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -136,7 +136,3 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_WHITELIST = (
-#     'http://localhost:8081',
-# )

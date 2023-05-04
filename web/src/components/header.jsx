@@ -16,17 +16,21 @@ import MuiAppBar from '@mui/material/AppBar';
 import List from '@mui/material/List';
 
 import Divider from '@mui/material/Divider';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
 import Folder from '@mui/icons-material/Folder';
 // import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import ResponsiveDialog from './drop-file-input/dropdialog';
+import { useHistory, useLocation } from 'react-router';
+import HomeIcon from '@mui/icons-material/Home';
+import { Button } from '@mui/material';
+// import { useCookies } from 'react-use-cookie';
+
 
 const drawerWidth = 240;
 const iconsize = 30; 
@@ -138,17 +142,71 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export const Header = () => {
 
 
+
+export const Header = ({searchQuerry,setSerachQuerry}) => {
+
+  const history = useHistory();
+  const location = useLocation();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  // const [removeCookie] = useCookies(['Id']);
+  
 
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
+  const handleSearchChange = (e) => {
+    setSerachQuerry(e.target.value);
+  };
+
+
+  const onLogout = () => {
+    // removeCookie('Id');
+    // removeCookie('token');
+    history.push('/')
+  }
+  
+  const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <Button {...other} variant='contained' size="medium" startIcon={<AccountCircleIcon/>} onClick={onLogout}/>;
+  })(({ theme, expand }) => ({
+    marginLeft: 'auto',
+    boxShadow:'none',
+    '&:hover': {
+      backgroundColor: 'white',
+      color:'Black',
+      borderColor: '#0062cc',
+      boxShadow: 'none',
+    },
+  }));
+
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
+    switch(index){
+      case 1:
+        history.push({pathname:'/homepage',state:{'Current_Folder':'root'}});
+        break;
+      case 2:
+        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Book'}});
+        break;
+      case 3:
+        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Resume'}});
+        break;
+      case 4:
+        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Publication'}});
+        break;
+      case 5:
+        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Legal Document'}});
+        break;
+      default:
+        break;
+
+    }
+    
   };
+
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -177,23 +235,32 @@ export const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            Document Classifier
-          </Typography>
+            
+          
+            <Typography
+              variant="h6"
+              noWrap
+              component="h6"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              
+              Document Classifier
+              
+            </Typography>
+          
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
+            <StyledInputBase onChange={handleSearchChange}
+              value={searchQuerry}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+          <ExpandMore >
+            Sign Out
+          </ExpandMore>
         </Toolbar>
       </AppBar>
 
@@ -212,9 +279,9 @@ export const Header = () => {
             onClick={(event) => handleListItemClick(event, 1)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:iconsize}}/>
+              <HomeIcon color="primary" style={{fontSize:iconsize}}/>
             </ListItemIcon>
-            <ListItemText primary="Book" />
+            <ListItemText primary="Home" />
           </ListItemButton>
 
           <ListItemButton
@@ -222,9 +289,9 @@ export const Header = () => {
             onClick={(event) => handleListItemClick(event, 2)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:iconsize}}/>
+              <Folder color="primary" style={{fontSize:iconsize}}/>
             </ListItemIcon>
-            <ListItemText primary="Resume" />
+            <ListItemText primary="Book" />
           </ListItemButton>
 
           <ListItemButton
@@ -232,9 +299,9 @@ export const Header = () => {
             onClick={(event) => handleListItemClick(event, 3)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:iconsize}}/>
+              <Folder color="primary" style={{fontSize:iconsize}}/>
             </ListItemIcon>
-            <ListItemText primary="Publication" />
+            <ListItemText  primary="Resume" />
           </ListItemButton>
 
           <ListItemButton
@@ -242,9 +309,19 @@ export const Header = () => {
             onClick={(event) => handleListItemClick(event, 4)}
           >
             <ListItemIcon>
-              <Folder style={{fontSize:iconsize}}/>
+              <Folder color="primary" style={{fontSize:iconsize}}/>
             </ListItemIcon>
-            <ListItemText primary="Legal Documents" />
+            <ListItemText primary="Publication" />
+          </ListItemButton>
+
+          <ListItemButton
+            selected={selectedIndex === 5}
+            onClick={(event) => handleListItemClick(event, 5)}
+          >
+            <ListItemIcon>
+              <Folder color="primary" style={{fontSize:iconsize}}/>
+            </ListItemIcon>
+            <ListItemText  primary="Legal Documents" />
           </ListItemButton>
 
         </List>

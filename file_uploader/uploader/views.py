@@ -14,6 +14,25 @@ import mimetypes
 import os
 from pathlib import Path
 from wsgiref.util import FileWrapper
+import requests
+import http.client
+import json
+import urllib.request
+import urllib.parse
+def verify():
+    try:
+        url = "http://0.0.0.0:7001/user/verify"
+        param = {'token':"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5NDM2MjExLCJpYXQiOjE2Nzg4MzE0MTEsImp0aSI6IjI3MDA5N2U3Yjk0MDQ1NDU5MjZkNDY5ZWQ5ZTFjNTlkIiwidXNlcl9pZCI6Mn0.dfkBrHwbVJg7bio9ORohXwa2E8JMZiSPZwQJ2byc1dw"}
+        data = urllib.parse.urlencode(param)
+        data = data.encode("ascii")
+
+        req = urllib.request.Request(url, data, method="POST")
+        response = urllib.request.urlopen(req)
+        print(response)
+        # res = requests.post('http://0.0.0.0:7001/user/verify',data=param)
+        # print(res)
+    except Exception as e:
+        print(e)
 
 
     
@@ -37,6 +56,7 @@ class Files_APIView_Detail(APIView):
     # search by userid    
     def get(self, request, pk,name=None, format=None):
         ## check name and determine path.
+        verify()
         file = self.get_object(pk,name)
         # serializer = FileSerializer(file)  
         data=[]

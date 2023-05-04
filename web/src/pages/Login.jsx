@@ -40,13 +40,6 @@ export const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
-
-    console.log("Making request")
 
     const payload = {
       'email': email,
@@ -59,11 +52,23 @@ export const Login = () => {
       {
         return;
       };
-      setCookie('token', response.data.access, { path: '/' });
+      const accesstoken= response.data.access;
+      const payload = {'token':accesstoken}
+      axios.post("http://127.0.0.1:7001/user/id",payload)
+      .then(async (response) =>
+      {
+        if(response.status !== 200)
+        {
+          return;
+        };
+        setCookie('ID',response.data);
+      }).catch((err) => {
+        console.log(err)
+      })
+      setCookie('token',accesstoken);
       // toast.success("Success"); not working
       
-      console.log("here");
-      history.push('/homepage');
+      history.push({pathname:'/homepage',state:{'Current_Folder':'root'}});
 
     })
     .catch( (err) => {

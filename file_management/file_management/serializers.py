@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import FolderDetails
+from .models import FolderDetails, Dataobject
 
 
 class FolderSerializer(serializers.ModelSerializer):

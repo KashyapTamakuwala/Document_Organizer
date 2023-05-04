@@ -13,12 +13,17 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import axios from 'axios';
+import { useLocation } from "react-router-dom";
+import { getCookie } from 'react-use-cookie';
 
 export const ResponsiveDialog = () => {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [fileList, setFileList] = React.useState([])
+
+  const location = useLocation();
+  console.log();
 
   const onFileChange = (files) => {
     console.log(files);
@@ -31,11 +36,12 @@ export const ResponsiveDialog = () => {
 
   const handleSave = () => {
     console.log("in handle close");
+    const userId = getCookie('ID');
     var fielData = new FormData();
     fielData.append('Name',fileList[0]['name']);
     fielData.append("type",'File');
-    fielData.append('Parent_Folder',"root");
-    fielData.append("User_id",'1');
+    fielData.append('Parent_Folder',location.state.Current_Folder);
+    fielData.append("User_id",userId);
     fielData.append('Files',fileList[0]);
     
     axios.post("http://127.0.0.1:7002/folder/",fielData)
@@ -57,6 +63,8 @@ export const ResponsiveDialog = () => {
     setOpen(false);
   };
 
+
+
   return (
     <div>
         <ListItemButton
@@ -67,7 +75,7 @@ export const ResponsiveDialog = () => {
             onClick={handleClickOpen}
           >
             <ListItemIcon>
-              <DriveFolderUploadIcon style={{fontSize:30}}  />
+              <DriveFolderUploadIcon color='primary' style={{fontSize:30}}  />
             </ListItemIcon>
             <ListItemText primary="Upload" />
         </ListItemButton>
