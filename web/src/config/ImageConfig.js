@@ -12,4 +12,5 @@ export const ImageConfig = {
     css: fileCSS,
     Folder: foldertype,
     File: fileDefault,
+    txt: fileDefault,
 }

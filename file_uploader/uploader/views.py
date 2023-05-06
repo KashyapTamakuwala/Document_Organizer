@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from django.http.response import HttpResponse
 # Create your views here.
 from rest_framework.response import Response
@@ -15,22 +14,22 @@ import os
 from pathlib import Path
 from wsgiref.util import FileWrapper
 import requests
-import http.client
-import json
 import urllib.request
 import urllib.parse
+from .ml_classification import getCategory
+
+   
 def verify():
     try:
-        url = "http://0.0.0.0:7001/user/verify"
-        param = {'token':"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5NDM2MjExLCJpYXQiOjE2Nzg4MzE0MTEsImp0aSI6IjI3MDA5N2U3Yjk0MDQ1NDU5MjZkNDY5ZWQ5ZTFjNTlkIiwidXNlcl9pZCI6Mn0.dfkBrHwbVJg7bio9ORohXwa2E8JMZiSPZwQJ2byc1dw"}
-        data = urllib.parse.urlencode(param)
-        data = data.encode("ascii")
-
-        req = urllib.request.Request(url, data, method="POST")
-        response = urllib.request.urlopen(req)
+        url = "http://authentication_app:7001/user/verify"
+        data = {'token':"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5NDM2MjExLCJpYXQiOjE2Nzg4MzE0MTEsImp0aSI6IjI3MDA5N2U3Yjk0MDQ1NDU5MjZkNDY5ZWQ5ZTFjNTlkIiwidXNlcl9pZCI6Mn0.dfkBrHwbVJg7bio9ORohXwa2E8JMZiSPZwQJ2byc1dw"}
+        print(url)
+        response = requests.post(
+                            url,
+                            data=data
+                        )
+        
         print(response)
-        # res = requests.post('http://0.0.0.0:7001/user/verify',data=param)
-        # print(res)
     except Exception as e:
         print(e)
 
@@ -56,6 +55,7 @@ class Files_APIView_Detail(APIView):
     # search by userid    
     def get(self, request, pk,name=None, format=None):
         ## check name and determine path.
+
         verify()
         file = self.get_object(pk,name)
         # serializer = FileSerializer(file)  
@@ -102,12 +102,13 @@ class Files_APIView_Detail(APIView):
     def post(self, request, format=None):
 
         
-        print(request.data)
+        #print(request.data)
 
         serializer = FileSerializer(data=request.data)
         
         files_list = request.FILES.getlist('one_file')
         error=[]
+        re = []
         if serializer.is_valid():
             for item in files_list:
                 if self.get_object(request.data['user_id'],item.name).exists():
@@ -115,10 +116,17 @@ class Files_APIView_Detail(APIView):
                     #return Response("File with same name already exist",status=status.HTTP_409_CONFLICT)
                 else:
                     f = File.objects.create(user_id=request.data['user_id'],name=item.name, one_file=item)
+                    fi = self.get_object(request.data['user_id'],item.name).first()
+                    serializer=FileSerializer(fi)
+                    data = serializer.data
+                    data['category'] = getCategory(data['one_file'])
+
+                    # print("fi",serializer.data)
+                    re.append(data)
             if len(error)>0:
                 return Response(error,status=status.HTTP_409_CONFLICT)
             else:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(re, status=status.HTTP_201_CREATED)
 
             
         

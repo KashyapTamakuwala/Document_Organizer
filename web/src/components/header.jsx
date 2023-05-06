@@ -9,12 +9,18 @@ import InputBase from '@mui/material/InputBase';
 import CssBaseline from '@mui/material/CssBaseline';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+// import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import Avatar from '@mui/material/Avatar';
 
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 
 import List from '@mui/material/List';
-
+import legal from '../assets/policy-document-50.png';
+import home from '../assets/home.png';
+import resume from '../assets/resume-50.png';
+import rp from '../assets/rp.png';
+import book from '../assets/book-50.png'
 import Divider from '@mui/material/Divider';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -279,7 +285,8 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
             onClick={(event) => handleListItemClick(event, 1)}
           >
             <ListItemIcon>
-              <HomeIcon color="primary" style={{fontSize:iconsize}}/>
+            <Avatar alt="LD" src={home} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" />
+              {/* <HomeIcon color="primary" style={{fontSize:iconsize}}/> */}
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItemButton>
@@ -289,7 +296,8 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
             onClick={(event) => handleListItemClick(event, 2)}
           >
             <ListItemIcon>
-              <Folder color="primary" style={{fontSize:iconsize}}/>
+              <Avatar alt="book" src={book} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" />
+              {/* <AutoStoriesIcon color="primary" style={{fontSize:iconsize}}/> */}
             </ListItemIcon>
             <ListItemText primary="Book" />
           </ListItemButton>
@@ -299,7 +307,8 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
             onClick={(event) => handleListItemClick(event, 3)}
           >
             <ListItemIcon>
-              <Folder color="primary" style={{fontSize:iconsize}}/>
+              <Avatar alt="Re" src={resume} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square"/>
+              {/* <Folder color="primary" style={{fontSize:iconsize}}/> */}
             </ListItemIcon>
             <ListItemText  primary="Resume" />
           </ListItemButton>
@@ -309,7 +318,8 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
             onClick={(event) => handleListItemClick(event, 4)}
           >
             <ListItemIcon>
-              <Folder color="primary" style={{fontSize:iconsize}}/>
+              <Avatar alt="rp" src={rp} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" /> 
+              {/* <Folder color="primary" style={{fontSize:iconsize}}/> */}
             </ListItemIcon>
             <ListItemText primary="Publication" />
           </ListItemButton>
@@ -319,7 +329,7 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
             onClick={(event) => handleListItemClick(event, 5)}
           >
             <ListItemIcon>
-              <Folder color="primary" style={{fontSize:iconsize}}/>
+                <Avatar alt="LD" src={legal} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" />
             </ListItemIcon>
             <ListItemText  primary="Legal Documents" />
           </ListItemButton>

@@ -16,3 +16,13 @@ wincertstore==0.2
 django-cors-headers
 requests==2.29.0
 requests-toolbelt==0.10.1
+numpy==1.21.6
+transformers==4.28.1
+clean-text==0.6.0
+PyPDF2==3.0.1
+scipy==1.7.3
+joblib==1.2.0
+python-docx==0.8.11
+pandas==1.1.5
+scikit-learn==1.0.2
+Unidecode

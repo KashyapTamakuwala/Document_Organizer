@@ -9,6 +9,8 @@ import Grid from '@mui/material/Grid'
 import axios from 'axios'
 import { useLocation } from "react-router-dom";
 import { getCookie } from 'react-use-cookie';
+import CreateFolder from '../components/createdialog';
+
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -81,8 +83,17 @@ return (
                 {
                     filteredItem.map( (content) => 
                     {
-                        return <FolderCard prop={{text:content.Name,type:content.Family}}/>
-
+                        
+                        if(content.Family === 'File'){
+                          const temp = content.Name.split(".");
+                          const t = temp[temp.length - 1];
+                          console.log(t);
+                          return <FolderCard prop={{text:content.Name,type:t,path:content.path}}/>
+                        }
+                        else {
+                          return <FolderCard prop={{text:content.Name,type:'Folder',path:content.path}}/>
+                        }
+                        
                     }
                     )
                 }
@@ -93,6 +104,11 @@ return (
                 <FolderCard prop={{text:'File',type:'File'}}/> */}
             </Grid>
         </Box >
+        {/* <Fab variant="extended" onClick={} color="primary" aria-label="add" sx={{position:'absolute','bottom':16,right:16}}>
+          <AddIcon sx={{ mr: 1 }} />
+          Create Folder
+        </Fab> */}
+        <CreateFolder/>
         
     </Box>
 );

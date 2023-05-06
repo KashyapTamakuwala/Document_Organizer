@@ -9,20 +9,29 @@ import { Box, Button } from '@mui/material';
 import { ImageConfig } from '../config/ImageConfig'; 
 import { useHistory } from 'react-router';
 import DownloadIcon from '@mui/icons-material/Download';
-
+import pd from '../assets/SC-1-1_cxHuas1.pdf'
 
 
 export const FolderCard = ({prop}) => {
   const theme = useTheme();
-  const text = prop.text;
-  const type = prop.type;
+  const [text,setText] = React.useState('');
+  setText(prop.text);
+  const [type,setType] = React.useState('');
+  setType(prop.type);
+  const [path,setPath] = React.useState('')
+  setPath(path)
   const icon = ImageConfig[type];
 
   const history = useHistory();
 
   const onOpenFolder = () => {
     console.log("Buuton click")
-    history.push({pathname:'/homepage',state:{'Current_Folder':prop.text}})
+    if (type === 'Folder'){
+      history.push({pathname:'/homepage',state:{'Current_Folder':prop.text}})
+    }
+    else{
+      window.open(pd, "_blank");
+    }
   }
 
   const onDownload = () => {

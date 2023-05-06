@@ -8,10 +8,12 @@ from urllib3.util.retry import Retry
 
 def getpath(userid,name):
     try:
-        url = "http://0.0.0.0:7003/file/{userid}/{name}".format(userid=userid,name=name)
+        url = "http://file_uploader:7003/file/{userid}/{name}".format(userid=userid,name=name)
+        requests.get(url)
         response = requests.get(url)
         print(response)
-        return response.data['one_file']
+        # return response.data['one_file']
+        return None 
     except Exception as e:
         print("getpath")
         print(e)
@@ -31,7 +33,7 @@ def callUploaderService(name,userid,file):
                             }
                         )
         response = requests.post(
-                            'http://0.0.0.0:7003/file/',
+                            'http://file_uploader:7003/file/',
                             data=mp_encoder,  # The MultipartEncoder is posted as data, don't use files=...!
                             # The MultipartEncoder provides the content-type header with the boundary:
                             headers={'Content-Type': mp_encoder.content_type}

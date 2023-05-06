@@ -113,7 +113,7 @@ class FolderAPI(APIView):
                     print(res)
                     ## upadate file list in parent folder
                     lis.append({'File_id':1,
-                                'Name':request.data['Name'],
+                                'Name':request.FILES.getlist('Files')[0].name,
                                 'Path':path,
                                 'Family':"File",
                                 'Category':"Book"})
@@ -170,7 +170,7 @@ class FolderAPI(APIView):
                         createfile = FolderDetails.objects.create(User_id=request.data['User_id'],
                                                             Folder_Name='root',
                                                             FileList=[{'File_id':1,
-                                                                       'Name':request.data['Name'],
+                                                                       'Name':request.FILES.getlist('Files')[0].name,
                                                                        'Path':path,
                                                                        'Family':"File",
                                                                        'Category':"type1"}]
