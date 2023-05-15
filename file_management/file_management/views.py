@@ -113,7 +113,7 @@ class FolderAPI(APIView):
                     ## Call file uploader api and category define api
                     up_fi = []
                     for fi in request.FILES.getlist('Files'):                
-                        res = callUploaderService(request.FILES.getlist('Files')[0].name,request.data['User_id'],fi)
+                        res = callUploaderService(fi.name,request.data['User_id'],fi)
                         up_fi.append(res.text)
 
                     print(up_fi)
@@ -172,7 +172,8 @@ class FolderAPI(APIView):
                         ## Call file uploader api and category define api
                         up_fi = []
                         for f in request.FILES.getlist('Files'):
-                            res = callUploaderService(request.FILES.getlist('Files')[0].name,request.data['User_id'],f)
+                            print(f)
+                            res = callUploaderService(f.name,request.data['User_id'],f)
                             up_fi.append(res.text)
                         
                         print("up_fi",up_fi)
