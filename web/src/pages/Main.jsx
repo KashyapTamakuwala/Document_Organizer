@@ -8,8 +8,9 @@ import FolderCard from '../components/foldercard'
 import Grid from '@mui/material/Grid'
 import axios from 'axios'
 import { useLocation } from "react-router-dom";
-import { getCookie } from 'react-use-cookie';
+import Cookies from 'js-cookie';
 import CreateFolder from '../components/createdialog';
+// import CircularProgress from '@mui/material/CircularProgress';
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -26,27 +27,44 @@ export const Main = () => {
     
     const [dataContent,setDataContent] = useState([]);
     const [searchQuerry,setSerachQuerry] = useState("");
+    const [isParent,setIsParent] = useState(false)
+    const [parent,setParent] = useState("");
+
     const folder = location.state.Current_Folder;
     const category = location.state.cat === undefined ? 'None' : location.state.cat;
     
     
     useEffect(()=>{
-        const userId =  getCookie('ID');  
-        const url = `http://127.0.0.1:7002/folder/${userId}`;
+        const userId =  Cookies.get('ID')
+        if (userId === -1){
+          window.location.reload()
+        }
+        const url = `http://localhost:8000/file/${userId}`;
         const param = {'fol':folder,'cat':category};
         axios.get(url,{params: param})
         .then( async (response) => {
-            const catArray = ['Book','Resume','Publication','Legal Document']
+            console.log(response)
+            const catArray = ['Book','Resume','Publication','Legal','Code','News']
             if (catArray.includes(category)){
                 setDataContent(response.data)
+                setIsParent(true)
             }
             else {
-                setDataContent(response.data[0]['FileList']);
+                if(response.data.length > 0){
+                  setDataContent(response.data[0]['FileList']);
+                  setParent(response.data[0]['Folder_Name']);
+              }
+              else{
+                setDataContent([]);
+                setParent("root");
+              }
+              
             }
         })
         .catch( (err) => {
         // toast.error("Wrong Username or Password")
         console.log(err);
+        window.location.reload()
         });
     },[folder,category]);
 
@@ -77,21 +95,32 @@ return (
         <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
             <DrawerHeader />
             <CssBaseline/>
-           
+            
 
             <Grid container direction="row" alignItems="center" spacing={{xs: 2}} sx={{paddingLeft:'6%'}}>
                 {
+                   
                     filteredItem.map( (content) => 
                     {
-                        
+                        var pf = "";
+
+                        if (isParent){
+                          // console.log("is true",pf)
+                          pf = content.Parent_Folder
+                        }
+                        else{
+                        // console.log("is false",pf)
+                         pf = parent;
+
+                        }
+                       
                         if(content.Family === 'File'){
                           const temp = content.Name.split(".");
                           const t = temp[temp.length - 1];
-                          console.log(t);
-                          return <FolderCard prop={{text:content.Name,type:t,path:content.path}}/>
+                          return <FolderCard prop={{text:content.Name,type:t,path:content.Path,folder:pf}}/>
                         }
                         else {
-                          return <FolderCard prop={{text:content.Name,type:'Folder',path:content.path}}/>
+                          return <FolderCard prop={{text:content.Name,type:'Folder',path:content.Path,folder:pf}}/>
                         }
                         
                     }

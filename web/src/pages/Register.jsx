@@ -97,7 +97,7 @@ export const Register = () => {
     payload.append('Confirm_Password',password);
 
 
-    axios.post('http://127.0.0.1:7001/user/register',payload)
+    axios.post('http://localhost:8000/user/register',payload)
     .then( async (response) => {
       if(response.status !== 201){
         return;

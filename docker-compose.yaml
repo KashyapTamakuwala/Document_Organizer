@@ -18,23 +18,6 @@ services:
     networks:
       - document-net
 
-
-  # sqldbmine:
-  #   image: mysql
-  #   # platform: linux/x86_64
-  #   restart: unless-stopped
-  #   ports:
-  #     - 3307:3307
-  #   environment:
-  #     - MYSQL_USER=documentorganizeradmin
-  #     - MYSQL_PASSWORD=password
-  #     - MYSQL_ROOT_PASSWORD=rootpassword
-  #   volumes:
-  #     - ./sql-data-2:/var/lib/mysql
-  #     - ./db-init-scripts-2:/docker-entrypoint-initdb.d
-  #   networks:
-  #     - document-net
-
   mysqldb:
     image: mysql
     # platform: linux/x86_64
@@ -55,7 +38,7 @@ services:
   #                               Web API                                 #
   #########################################################################
 
-  authentication_app:
+  authentication:
     build: 
       context: ./authentication
       dockerfile: Dockerfile
@@ -70,7 +53,7 @@ services:
     networks:
       - document-net
   
-  filemanagement_app:
+  filemanagement:
     build: 
       context: ./file_management
       dockerfile: Dockerfile
@@ -85,7 +68,7 @@ services:
     networks:
       - document-net
 
-  file_uploader:
+  fileuploader:
     build: 
       context: ./file_uploader
       dockerfile: Dockerfile
@@ -114,22 +97,26 @@ services:
         source: ./web/node_modules
         target: /app/node_modules
     restart: unless-stopped
+    depends_on:
+      - fileuploader
+      - filemanagement
+      - authentication
     networks:
       - document-net
 
-  # nginx:
-  #   depends_on:
-  #     - mongodb
-  #   image: nginx:alpine
-  #   ports:
-  #     - 8000:8000
-  #   volumes:
-  #     - type: bind
-  #       source: ./nginx/nginx.conf
-  #       target: /etc/nginx/conf.d/default.conf
-  #   restart: unless-stopped
-  #   networks:
-  #     - document-net
+  nginx:
+    depends_on:
+      - mongodb
+    image: nginx:alpine
+    ports:
+      - 8000:8000
+    volumes:
+      - type: bind
+        source: ./nginx/nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+    restart: unless-stopped
+    networks:
+      - document-net
 
 
 

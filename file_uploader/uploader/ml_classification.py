@@ -11,6 +11,10 @@ tokenized_categories  = [UploaderConfig.tokenizer.encode(cat)[0] for cat in Uplo
 
 def read_data(path):
     extension = path.split(".")[-1]
+    # print(extension)
+
+    if extension in UploaderConfig.code_ext:
+        return "Code"
     
     if extension == "pdf":
         with open(path, 'rb') as pdf_file:
@@ -36,7 +40,7 @@ def read_data(path):
             text = text + " "+ para.text
         cleaned_text = UploaderConfig.cleaner.transform([text])
         return cleaned_text[0]
-    else:
+    elif extension in ['png','jpg','jpeg']:
         payload = {
                 'apikey': 'K86860089688957',
                 'language': 'eng',  # The language of the text in the image
@@ -53,11 +57,13 @@ def read_data(path):
         text = ocr_result['ParsedResults'][0]['ParsedText']
         cleaned_text = UploaderConfig.cleaner.transform([text])
         return cleaned_text[0]
+    else:
+        return "None"
     
 
 def token(text):
     
-    prefix = f"Classify the following document into a one of the following topically semantic categories. Possible categories: {', '.join(categories)}. Document: "
+    prefix = f"Classify the following document into a one of the following topically semantic categories. Possible categories: {', '.join(UploaderConfig.categories)}. Document: "
     inputs = prefix + text
     tokens = UploaderConfig.tokenizer(inputs,max_length=512, truncation=True,return_tensors="pt")
     return tokens
@@ -66,11 +72,21 @@ def token(text):
 def getCategory(path):
     path = "/app/file_uploader/"+path
     text = read_data(path)
-    tokens  = token(text)
-    outputs = UploaderConfig.model.generate(**tokens, return_dict_in_generate=True, output_scores=True, max_new_tokens=1, temperature=0)
-    scores = [outputs.scores[0][:,t].numpy()[0] for t in tokenized_categories]
-    scores = scipy.special.softmax(scores)
-    return  UploaderConfig.categories[np.argmax(scores)]
+    # print("text",text)
+    if text=='Code':
+        return 'Code'
+    elif text =='None':
+        return 'None'
+    else:
+        tokens  = token(text)
+        outputs = UploaderConfig.model.generate(**tokens, return_dict_in_generate=True, output_scores=True, max_new_tokens=1, temperature=0)
+        scores = [outputs.scores[0][:,t].numpy()[0] for t in tokenized_categories]
+        scores = scipy.special.softmax(scores)
+        cat = UploaderConfig.categories[np.argmax(scores)]
+        if cat == 'Publication':
+            return 'Books'
+        else:
+            return cat
 
 
 

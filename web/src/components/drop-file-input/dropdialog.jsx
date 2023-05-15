@@ -13,16 +13,21 @@ import DropFileInput from './DropFileInput';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+// import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import axios from 'axios';
 import { useLocation } from "react-router-dom";
-import { getCookie } from 'react-use-cookie';
+import Cookies from 'js-cookie';
+// import CircularProgress from '@mui/material/CircularProgress';
+import { Box } from '@mui/material';
+import LoaderDialog from '../loader';
 
 export const ResponsiveDialog = () => {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [fileList, setFileList] = React.useState([])
+  const [isLoading,setIsLoading] = React.useState(false)
+
 
   const location = useLocation();
   console.log();
@@ -38,28 +43,35 @@ export const ResponsiveDialog = () => {
 
   const handleSave = () => {
     console.log("in handle close");
-    const userId = getCookie('ID');
+    const userId = Cookies.get("ID")
     var fielData = new FormData();
+    console.log(fileList);
     fielData.append('Name',fileList[0]['name']);
     fielData.append("type",'File');
     fielData.append('Parent_Folder',location.state.Current_Folder);
     fielData.append("User_id",userId);
-    fielData.append('Files',fileList[0]);
+    // fielData.append('Files',fileList[0]);
+    fileList.forEach(file=>fielData.append('Files',file));
+    setIsLoading(true)
     
-    axios.post("http://127.0.0.1:7002/folder/",fielData)
+    
+    axios.post("http://localhost:8000/file/",fielData,{
+      headers: {
+          'Content-Type': 'multipart/form-data',
+      }})
     .then( async (response) => {
       console.log(response);
+      console.log(fielData);
       if(response.status !== 201){
         return;
       };
-
-      console.log(response);
+      setIsLoading(false)
+      window.location.reload(); 
     })
     .catch( (err) =>{ 
+      setIsLoading(false)
       console.log(err);
     })
-
-    window.location.reload(); 
     setOpen(false);
   };
   const handleClose = () => {
@@ -69,7 +81,7 @@ export const ResponsiveDialog = () => {
 
 
   return (
-    <div>
+    <Box>
         <ListItemButton
             sx={{
               minHeight: 48,
@@ -86,6 +98,7 @@ export const ResponsiveDialog = () => {
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open responsive dialog
       </Button> */}
+        
       <Dialog
         fullWidth={true}
         fullScreen={fullScreen}
@@ -93,6 +106,7 @@ export const ResponsiveDialog = () => {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
+
         <DialogContent>
           <DialogContentText>
                 <DropFileInput onFileChange={(files) => onFileChange(files)}/>
@@ -107,7 +121,9 @@ export const ResponsiveDialog = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+
+      <LoaderDialog Loading = {isLoading}/>
+    </Box>
   );
 }
 

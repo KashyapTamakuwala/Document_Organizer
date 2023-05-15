@@ -19,22 +19,8 @@ import urllib.parse
 from .ml_classification import getCategory
 
    
-def verify():
-    try:
-        url = "http://authentication_app:7001/user/verify"
-        data = {'token':"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc5NDM2MjExLCJpYXQiOjE2Nzg4MzE0MTEsImp0aSI6IjI3MDA5N2U3Yjk0MDQ1NDU5MjZkNDY5ZWQ5ZTFjNTlkIiwidXNlcl9pZCI6Mn0.dfkBrHwbVJg7bio9ORohXwa2E8JMZiSPZwQJ2byc1dw"}
-        print(url)
-        response = requests.post(
-                            url,
-                            data=data
-                        )
-        
-        print(response)
-    except Exception as e:
-        print(e)
 
 
-    
 class Files_APIView_Detail(APIView):
     #parser_class = (FileUploadParser, )
     parser_classes = (MultiPartParser, FormParser, JSONParser)
@@ -56,7 +42,6 @@ class Files_APIView_Detail(APIView):
     def get(self, request, pk,name=None, format=None):
         ## check name and determine path.
 
-        verify()
         file = self.get_object(pk,name)
         # serializer = FileSerializer(file)  
         data=[]
@@ -67,36 +52,8 @@ class Files_APIView_Detail(APIView):
             data.append(serializer.data)
         return Response(data,status=status.HTTP_200_OK)
     
-    # def get(self, request, pk,filename=None, format=None):
-
-    #     # file = self.get_object(pk)
-    #     # serializer = FileSerializer(file)  
-    #     # data=[]
-    #     # for f in file:
-    #     #     serializer=FileSerializer(f)
-    #     #     data.append(serializer.data)
-    #     return Response(status=status.HTTP_200_OK)
-    
-    # define search by file name for a user
 
 
-    def put(self, request, pk, format=None):
-        file = self.get_object(pk)
-        serializer = FileSerializer(file, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk,name, format=None):
-        if name == None:
-            return Response("Provide a valid name",status=status.HTTP_404_NOT_FOUND)
-        file = self.get_object(pk,name)
-        if file.exists:
-            file.delete()
-        else:
-            return Response("Provide a valid name",status=status.HTTP_404_NOT_FOUND)
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
     # keep only signle file upload in real project and make it async in file management
     def post(self, request, format=None):
@@ -150,13 +107,13 @@ class File_Download_Api(APIView):
     # search by userid    
     def get(self, request, pk,name=None, format=None):
         ## check name and determine path.
-        file = self.get_object(pk,name)
-        print(len(file))
+        name = request.GET.get('name').split(",")
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
         print(BASE_DIR)
-        if len(file) == 0:
+        if len(name) == 0:
             response = Response("Not Found",status=status.HTTP_404_NOT_FOUND)
-        elif len(file) == 1:
+        elif len(name) == 1:
+            file = self.get_object(pk,name[0])
             serializer = FileSerializer(file[0])
             filename = serializer.data['name']
             filepath = BASE_DIR + serializer.data['one_file']
@@ -165,8 +122,9 @@ class File_Download_Api(APIView):
             response['Content-Disposition'] = "attachment; filename=%s" % filename
         else:
             filepathlist=[]
-            for f in file:
-                serializer = FileSerializer(f)
+            for n in name:
+                file = self.get_object(pk,n)
+                serializer = FileSerializer(file[0])
                 filepath = BASE_DIR + serializer.data['one_file']
                 filepathlist.append(filepath)
             zipdestinationpath = BASE_DIR + '/media/document/{id:d}/out.zip'
@@ -185,3 +143,47 @@ class File_Download_Api(APIView):
             file_path.unlink()
 
         return response
+    
+
+class File_Stream_Api(APIView):
+
+    def get_object(self, pk,name=None): 
+        if name==None:
+            try:
+                return File.objects.all().filter(user_id=pk)
+            except File.DoesNotExist:
+                raise Http404
+        else:
+            try:
+                return File.objects.all().filter(user_id=pk,name=name)
+            except  File.DoesNotExist:
+                raise Http404
+
+    
+    # search by userid    
+    def get(self, request, pk, format=None):
+        ## check name and determine path.
+        name = request.GET.get('name')
+        file = self.get_object(pk,name)
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+        serializer = FileSerializer(file[0])
+        filename = serializer.data['name']
+        filepath = BASE_DIR + serializer.data['one_file']
+        mime_type, _ = mimetypes.guess_type(filepath)
+        response = HttpResponse(FileWrapper(open(filepath,'rb')), content_type=mime_type)
+        response['Content-Disposition'] = "attachment; filename=%s" % filename
+       
+
+        return response
+    
+def delete(request, pk,name, format=None):
+    print("In delete")
+    if name == None:
+        return Response("Provide a valid name",status=status.HTTP_404_NOT_FOUND)
+    file = File.objects.all().filter(user_id=pk,name=name)
+    print(file)
+    if file.exists:
+        file.delete()
+    else:
+        return HttpResponse("Provide a valid name",status=status.HTTP_404_NOT_FOUND)
+    return HttpResponse(status=status.HTTP_204_NO_CONTENT)

@@ -4,8 +4,9 @@ import createHistory from "history/createBrowserHistory";
 import Login from '../pages/Login'
 import Register from "../pages/Register";
 import Main from '../pages/Main';
-import dD from "../components/drop-file-input/dropdialog";
+// import dD from "../components/drop-file-input/dropdialog";
 // import temp from "../components/new";
+import LoaderDialog from "../components/loader";
 
 
 
@@ -20,8 +21,8 @@ export const AppRouter = () => (
         <Route path = "/" exact={true} component={Login}/>
         <Route path = "/register" component={Register}/>
         <Route path = "/homepage" component={Main}/>
-        <Route path = '/temp' component={dD}/>
-        {/* <Route path = '/t' component={temp} /> */}
+        {/* <Route path = '/temp' component={dD}/> */}
+        <Route path = '/t' component={LoaderDialog} />
     </Switch>
 
     </Router>

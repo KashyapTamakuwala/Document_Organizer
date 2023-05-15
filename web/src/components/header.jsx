@@ -16,10 +16,11 @@ import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 
 import List from '@mui/material/List';
-import legal from '../assets/policy-document-50.png';
+import code from '../assets/code.png';
+import news from '../assets/news.png';
 import home from '../assets/home.png';
 import resume from '../assets/resume-50.png';
-import rp from '../assets/rp.png';
+import legal from '../assets/policy-document-50.png'
 import book from '../assets/book-50.png'
 import Divider from '@mui/material/Divider';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -29,17 +30,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Folder from '@mui/icons-material/Folder';
 // import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import ResponsiveDialog from './drop-file-input/dropdialog';
 import { useHistory, useLocation } from 'react-router';
-import HomeIcon from '@mui/icons-material/Home';
 import { Button } from '@mui/material';
-// import { useCookies } from 'react-use-cookie';
+import Cookies from 'js-cookie' 
 
 
-const drawerWidth = 240;
-const iconsize = 30; 
+const drawerWidth = 240; 
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -168,8 +166,7 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
 
 
   const onLogout = () => {
-    // removeCookie('Id');
-    // removeCookie('token');
+    Cookies.remove("ID")
     history.push('/')
   }
   
@@ -191,7 +188,7 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
     setSelectedIndex(index);
     switch(index){
       case 1:
-        history.push({pathname:'/homepage',state:{'Current_Folder':'root'}});
+        history.push({pathname:'/homepage',state:{'Current_Folder':'root','cat':'None'}});
         break;
       case 2:
         history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Book'}});
@@ -200,10 +197,13 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
         history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Resume'}});
         break;
       case 4:
-        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Publication'}});
+        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Legal'}});
         break;
       case 5:
-        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Legal Document'}});
+        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'News'}});
+        break;
+      case 6:
+        history.push({pathname:'/homepage',state:{'Current_Folder':location.state.Current_Folder,'cat':'Code'}});
         break;
       default:
         break;
@@ -299,7 +299,7 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
               <Avatar alt="book" src={book} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" />
               {/* <AutoStoriesIcon color="primary" style={{fontSize:iconsize}}/> */}
             </ListItemIcon>
-            <ListItemText primary="Book" />
+            <ListItemText primary="Book and Publication" />
           </ListItemButton>
 
           <ListItemButton
@@ -313,15 +313,15 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
             <ListItemText  primary="Resume" />
           </ListItemButton>
 
+
           <ListItemButton
             selected={selectedIndex === 4}
             onClick={(event) => handleListItemClick(event, 4)}
           >
             <ListItemIcon>
-              <Avatar alt="rp" src={rp} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" /> 
-              {/* <Folder color="primary" style={{fontSize:iconsize}}/> */}
+                <Avatar alt="LD" src={legal} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" />
             </ListItemIcon>
-            <ListItemText primary="Publication" />
+            <ListItemText  primary="Legal Documents" />
           </ListItemButton>
 
           <ListItemButton
@@ -329,9 +329,20 @@ export const Header = ({searchQuerry,setSerachQuerry}) => {
             onClick={(event) => handleListItemClick(event, 5)}
           >
             <ListItemIcon>
-                <Avatar alt="LD" src={legal} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" />
+                <Avatar alt="LD" src={news} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" />
             </ListItemIcon>
-            <ListItemText  primary="Legal Documents" />
+            <ListItemText  primary="News" />
+          </ListItemButton>
+
+          <ListItemButton
+            selected={selectedIndex === 6}
+            onClick={(event) => handleListItemClick(event, 6)}
+          >
+            <ListItemIcon>
+              <Avatar alt="rp" src={code} sx={{width: 40, height: 40, marginLeft:'0%'}} variant="square" /> 
+              {/* <Folder color="primary" style={{fontSize:iconsize}}/> */}
+            </ListItemIcon>
+            <ListItemText primary="Code" />
           </ListItemButton>
 
         </List>

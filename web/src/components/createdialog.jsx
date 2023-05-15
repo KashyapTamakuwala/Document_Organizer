@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,7 +12,7 @@ import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 import axios from 'axios';
 import { useLocation } from "react-router-dom";
-import { getCookie } from 'react-use-cookie';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -70,7 +69,7 @@ export  const CreateFolder = () => {
   };
 
   const handleCreate = () =>{
-    const userId = getCookie('ID');
+    const userId = Cookies.get('ID');
     var fielData = new FormData();
     fielData.append('Name',text);
     fielData.append("type",'Folder');
@@ -78,7 +77,7 @@ export  const CreateFolder = () => {
     fielData.append("User_id",userId);
     // fielData.append('Files',fileList[0]);
     
-    axios.post("http://127.0.0.1:7002/folder/",fielData)
+    axios.post("http://localhost:8000/file/",fielData)
     .then( async (response) => {
       console.log(response);
       if(response.status !== 201){

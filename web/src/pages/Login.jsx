@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { setCookie } from 'react-use-cookie';
+import Cookies from 'js-cookie';
 import { useHistory } from 'react-router';
 // import {toast} from 'react-hot-toast';
 
@@ -46,7 +46,7 @@ export const Login = () => {
       'password': password
     }
 
-    axios.post('http://127.0.0.1:7001/user/login',payload)
+    axios.post('http://localhost:8000/user/login',payload)
     .then( async (response) => {
       if(response.status !== 200)
       {
@@ -54,18 +54,18 @@ export const Login = () => {
       };
       const accesstoken= response.data.access;
       const payload = {'token':accesstoken}
-      axios.post("http://127.0.0.1:7001/user/id",payload)
+      axios.post("http://localhost:8000/user/id",payload)
       .then(async (response) =>
       {
         if(response.status !== 200)
         {
           return;
         };
-        setCookie('ID',response.data);
+        Cookies.set('ID', response.data, { expires: 1 });
       }).catch((err) => {
         console.log(err)
       })
-      setCookie('token',accesstoken);
+      Cookies.set('token', accesstoken, { expires: 1 });
       // toast.success("Success"); not working
       
       history.push({pathname:'/homepage',state:{'Current_Folder':'root'}});

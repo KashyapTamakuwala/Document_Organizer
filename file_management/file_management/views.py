@@ -6,9 +6,11 @@ from rest_framework import status, permissions
 from .models import FolderDetails, DataobjectForm
 import traceback
 import logging
-from .helper import callUploaderService, getpath
+from .helper import callUploaderService
 import ast
-
+import json
+from django.http.response import HttpResponse
+import requests
 
 # view for registering users
 class FolderAPI(APIView):
@@ -34,6 +36,7 @@ class FolderAPI(APIView):
                     d['FileList'] = ast.literal_eval(d['FileList'])
                     for file in d['FileList'] :
                         if file['Category'] == cat:
+                            file['Parent_Folder'] = d['Folder_Name']
                             data.append(file)
                 return data
                 
@@ -53,6 +56,7 @@ class FolderAPI(APIView):
     
     def post(self,request,format=None):
 
+        print("Folder",request.data)
         obj=FolderDetails.objects.filter(Folder_Name=request.data['Parent_Folder'],
                                          User_id=request.data['User_id'])
         
@@ -106,17 +110,22 @@ class FolderAPI(APIView):
                     
                     
 
-                    ## Call file uploader api and category define api                    
-                    res = callUploaderService(request.data['Name'],request.data['User_id'],request.FILES.getlist('Files')[0])
-                    path = getpath(userid=request.data['User_id'],name=request.data['Name'])
+                    ## Call file uploader api and category define api
+                    up_fi = []
+                    for fi in request.FILES.getlist('Files'):                
+                        res = callUploaderService(request.FILES.getlist('Files')[0].name,request.data['User_id'],fi)
+                        up_fi.append(res.text)
 
-                    print(res)
-                    ## upadate file list in parent folder
-                    lis.append({'File_id':1,
-                                'Name':request.FILES.getlist('Files')[0].name,
-                                'Path':path,
-                                'Family':"File",
-                                'Category':"Book"})
+                    print(up_fi)
+                    for iter in up_fi:
+                        d = ast.literal_eval(iter)
+                        print("heree",d)
+                        ## upadate file list in parent folder
+                        lis.append({'File_id':1,
+                                    'Name':d[0]['name'],
+                                    'Path':d[0]['one_file'],
+                                    'Family':"File",
+                                    'Category':d[0]['category']})
                     
                     fol.update(FileList=lis)
                     return Response("File Created",status=status.HTTP_201_CREATED)
@@ -161,19 +170,25 @@ class FolderAPI(APIView):
                     try:
                         
                         ## Call file uploader api and category define api
-                        res = callUploaderService(request.data['Name'],request.data['User_id'],request.FILES.getlist('Files')[0])
-                        #path = getpath(userid=request.data['User_id'],name=request.data['Name'])
-                        path = None
-                        print(res)
+                        up_fi = []
+                        for f in request.FILES.getlist('Files'):
+                            res = callUploaderService(request.FILES.getlist('Files')[0].name,request.data['User_id'],f)
+                            up_fi.append(res.text)
+                        
+                        print("up_fi",up_fi)
+                        temp =[]
+                        for iter in up_fi:
+                            d = ast.literal_eval(iter)
+                            temp.append({'File_id':1,
+                                        'Name':d[0]['name'],
+                                        'Path':d[0]['one_file'],
+                                        'Family':"File",
+                                        'Category':d[0]['category']})
 
                         ## created root folder with Update File list
                         createfile = FolderDetails.objects.create(User_id=request.data['User_id'],
                                                             Folder_Name='root',
-                                                            FileList=[{'File_id':1,
-                                                                       'Name':request.FILES.getlist('Files')[0].name,
-                                                                       'Path':path,
-                                                                       'Family':"File",
-                                                                       'Category':"type1"}]
+                                                            FileList=temp
                                                             ) 
                         return Response("Succefull",status=status.HTTP_201_CREATED)
                     except Exception as e:
@@ -200,3 +215,66 @@ class FolderCatAPI(APIView):
             logging.error(traceback.format_exc())
             return Response("Not able to fetch Data",status=status.HTTP_404_NOT_FOUND)
         return Response(data,status=status.HTTP_200_OK)
+
+
+class FolderDelete(APIView):
+
+    # def getfile(self,folder_name_lis,li=[]):
+    #     pass
+
+    def getFolder(self,pk,folder_list=[],file_list=[]):
+        fol_list = [folder_list[0]]
+        while len(folder_list) !=0 :
+            folder_name = folder_list[0]
+            f = FolderDetails.objects.filter(User_id=pk,Folder_Name=folder_name)
+            getfolder = f.get()
+            ser = FolderSerializer(getfolder)
+            d = ser.data
+            d['FileList'] = ast.literal_eval(d['FileList'])
+            for i in d['FileList']:
+                if i['Family'] == 'File':
+                    file_list.append(i['Name'])
+                else:
+                    folder_list.append(i['Name'])
+                    fol_list.append(i['Name'])
+            folder_list.pop(0)
+        return file_list,fol_list
+
+    def post(self,request,pk):
+        Parent_folder = request.data['name']
+        file_name = request.data['fname']
+
+        try:
+            folders = FolderDetails.objects.filter(User_id=pk,Folder_Name=Parent_folder)
+            getfolder = folders.get()
+            ser = FolderSerializer(getfolder)
+            d = ser.data
+            d['FileList'] = ast.literal_eval(d['FileList'])
+            temp=[]
+            for i in d['FileList']:
+                if i['Name'] == file_name:
+                    if i['Family']=='File':
+                        url = "http://fileuploader:7003/file/delete/{userid}/{name}".format(userid=pk,name=file_name)
+                        print(url)
+                        response = requests.get(url)
+                        continue
+                    else:
+                        file_list,folder_list = self.getFolder(pk,folder_list = [i['Name']])
+                        for f in file_list:
+                            url = "http://fileuploader:7003/file/delete/{userid}/{name}".format(userid=pk,name=f)
+                            print(url)
+                            response = requests.get(url)
+                        for j in folder_list:
+                            f = FolderDetails.objects.filter(User_id=pk,Folder_Name=j)
+                            f.update(FileList=[])
+                        continue
+
+                else:
+                    temp.append(i)
+            
+            folders.update(FileList=temp)
+        except Exception as e:
+            print(e)
+            return HttpResponse("Error",status=status.HTTP_204_NO_CONTENT)
+        return HttpResponse("Delete",status=status.HTTP_204_NO_CONTENT)
+    

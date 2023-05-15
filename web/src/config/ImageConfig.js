@@ -9,6 +9,7 @@ export const ImageConfig = {
     pdf: filePdf,
     png: filePng,
     jpeg:filePng,
+    jpg:filePng,
     css: fileCSS,
     Folder: foldertype,
     File: fileDefault,

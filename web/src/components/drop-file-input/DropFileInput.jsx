@@ -19,12 +19,27 @@ export const DropFileInput = props => {
     const onDrop = () => wrapperRef.current.classList.remove('dragover');
 
     const onFileDrop = (e) => {
-        const newFile = e.target.files[0];
-        if (newFile) {
-            const updatedList = [...fileList, newFile];
-            setFileList(updatedList);
-            props.onFileChange(updatedList);
+        console.log(e.target.files.length)
+        console.log(e.target.files[1])
+
+        var updatedList = [...fileList]
+
+        if (e.target.files.length > 0){
+            for (let i =0; i<e.target.files.length;i++){
+                updatedList = [...updatedList,e.target.files[i]]
+                // const updatedList = [...fileList, ];
+            }
         }
+        console.log("sdfd",updatedList)
+        setFileList(updatedList);
+        props.onFileChange(updatedList);
+        
+        // const newFile = e.target.files[0];
+        // if (newFile) {
+        //     const updatedList = [...fileList, newFile];
+        //     setFileList(updatedList);
+        //     props.onFileChange(updatedList);
+        // }
     }
 
     const fileRemove = (file) => {
@@ -47,7 +62,7 @@ export const DropFileInput = props => {
                     <img src={uploadImg} alt="" />
                     <p>Drag & Drop your files here</p>
                 </div>
-                <input type="file" webkitdirectory mozdirectory value="" onChange={onFileDrop}/>
+                <input type="file" multiple webkitdirectory mozdirectory value="" onChange={onFileDrop}/>
             </div>
             {
                 fileList.length > 0 ? (
