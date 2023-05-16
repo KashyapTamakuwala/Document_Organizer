@@ -8,7 +8,6 @@ We have designed the application with microservice architecture and divided the 
 
 
 ## How to Run
-* There is sample config file (config.json) in each service folders which you should edit with proper values. (To run in develop mode no need to edit any file)
 * To run the servers and frontend (web) just run `docker-compose up`
 * Access the web app at `localhost:3000`
 * Following are the API Docs URL for each service
