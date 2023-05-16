@@ -2,7 +2,7 @@
 
 
 ## System Architecture
-![System Architecture]()
+![System Architecture](Proj_arch.jpeg)
 
 We have designed the application with microservice architecture and divided the whole backend application into the above shown services. These services have independent databases and chosen databases (MySql or MongoDB) based on the needs for that particular service. A docker-compose file is provided which builds containers for all services and run the whole application stack.
 
