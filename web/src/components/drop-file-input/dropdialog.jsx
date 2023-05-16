@@ -20,6 +20,8 @@ import Cookies from 'js-cookie';
 // import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/material';
 import LoaderDialog from '../loader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export const ResponsiveDialog = () => {
   const [open, setOpen] = React.useState(false);
@@ -66,10 +68,24 @@ export const ResponsiveDialog = () => {
         return;
       };
       setIsLoading(false)
+      toast.success('File Uploaded Sucessfully', {
+        position: "top-center",
+        autoClose: 5000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "light",
+        });
       window.location.reload(); 
     })
     .catch( (err) =>{ 
       setIsLoading(false)
+      toast.error('Uploading Error', {
+        position: "top-center",
+        autoClose: 5000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "light",
+        });
       console.log(err);
     })
     setOpen(false);

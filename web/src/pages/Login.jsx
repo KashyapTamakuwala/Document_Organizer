@@ -14,6 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router';
 // import {toast} from 'react-hot-toast';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import axios from 'axios';
 
@@ -62,6 +64,13 @@ export const Login = () => {
           return;
         };
         Cookies.set('ID', response.data, { expires: 1 });
+        toast.success('Sucess', {
+          position: "top-center",
+          autoClose: 5000,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "light",
+          });
       }).catch((err) => {
         console.log(err)
       })
@@ -73,6 +82,13 @@ export const Login = () => {
     })
     .catch( (err) => {
       // toast.error("Wrong Username or Password")
+      toast.error('Wrong User Name or Password', {
+        position: "top-center",
+        autoClose: 5000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "light",
+        });
       console.log(err);
     });
 
@@ -148,6 +164,16 @@ export const Login = () => {
             </Grid>
           </Box>
         </Box>
+        <ToastContainer
+            position="top-center"
+            autoClose={1000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            theme="light"
+            />
         
       </Container>
     </ThemeProvider>

@@ -11,7 +11,7 @@ class UploaderConfig(AppConfig):
 
     cleaner_path = '/app/file_uploader/uploader/Static/clean.joblib'
     cleaner = joblib.load(cleaner_path)
-    model_path = '/app/file_uploader/uploader/static/t5'
+    model_path = '/app/file_uploader/uploader/Static/t5'
     tokenizer = AutoTokenizer.from_pretrained('t5-small')
     model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
     categories = ['Book', 'Resume', 'Legal', 'Publication', 'News']

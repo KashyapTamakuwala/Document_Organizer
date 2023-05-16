@@ -13,6 +13,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { validate as validateEmail } from 'email-validator';
 import { useHistory } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import axios from 'axios';
 
@@ -102,10 +104,24 @@ export const Register = () => {
       if(response.status !== 201){
         return;
       };
+      toast.success('Registered Sucessfully', {
+        position: "top-center",
+        autoClose: 5000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "light",
+        });
       console.log(response);
       history.push('/');
     })
     .catch( (err) =>{ 
+      toast.error('Username already exist', {
+        position: "top-center",
+        autoClose: 5000,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "light",
+        });
       console.log(err);
     })
     
@@ -205,6 +221,16 @@ export const Register = () => {
             </Grid>
           </Box>
         </Box>
+        <ToastContainer
+            position="top-center"
+            autoClose={1000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            theme="light"
+            />
       </Container>
     </ThemeProvider>
   );
