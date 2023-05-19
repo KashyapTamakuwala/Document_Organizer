@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    
+  <link href="/static/img/swlogo57x57.png" rel="apple-touch-icon" type="image/png" />
+  <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/vnd.microsoft.icon" />
+  <meta charset="utf-8" />
+  <meta name="verify-v1" content="RebhOpUlThetsH2YAKc+VKN3GjFkPbLvUbJtxDYCkUM=" />
+  <meta name="msvalidate.01" content="317207F45DDF86C6BCBE95113BF6A23A" />
+  <meta name="robots" content="index, follow" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name = "format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="stylesheet" href="/static/dist/css/main.91a8bb11.chunk.css">
+
+  <title>Smashwords &ndash; Join Smashwords</title>
+</head>
+
+<body ng-app="smashwords-core">
+<script src="/static/dist/js/runtime.f4f6e3c6.js"></script>
+<script src="/static/dist/js/1.841b96a0.chunk.js"></script>
+<script src="/static/dist/js/5.3c90af48.chunk.js"></script>
+<script src="/static/dist/js/main.567f59c6.chunk.js"></script>
+
+  <script>
+      Raven.config('https://db0acfea578c4f0293ca21d2993d003f@sentry.io/10253',
+          {whitelistUrls: [/smashwords.com/], release: 'v2023.03.17.01'}).addPlugin(AngularPlugin, angular).install();
+  </script>
+  <script>
+    window.angularData = {};
+    window.angularData.user = {"firstName":"","lastName":"","id":-1,"fullName":"Anonymous","profPicURL":"\/static\/img\/person_reading.png"};
+    window.angularData.user.canPublishBooks = true;
+    window.angularData.user.loggedIn = false;
+    window.angularData.user.SSLBaseUrl = 'https://www.smashwords.com';
+;
+  </script>
+
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-886172-7']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+<!--[if lt IE 8]>
+<div class="jumbotron alert">
+  <img src="https://dwtr67e3ikfml.cloudfront.net/static/1/swlogo.png" height="67" alt="Smashwords" />
+  <p>Oops! We're sorry, but your browser is no longer supported by Smashwords. Try
+    <a href="http://whatbrowser.org">upgrading your browser</a> to a new version for a
+    better experience on Smashwords and other sites, and improved security.</p>
+  <p><a class="btn btn-outline-secondary" href="http://whatbrowser.org">Help Me Upgrade My
+    Browser</a>
+  </p>
+</div>
+<![endif]-->
+<div id="wrap">
+  <div id="header">
+    <div id="header-md-bar">
+      <div id="header-logo">
+        <a href="https://www.smashwords.com/">
+          <img src="https://dwtr67e3ikfml.cloudfront.net/static/1/swlogo.png" height="67" width="250" alt="Smashwords">
+        </a>
+      </div>
+    </div>
+
+    <div id="header-right">
+      <div id="header-search-container">
+        <form action="/books/search" method="get" class="header-search">
+          <label for="primarysearch" class="sr-only">Search</label>
+          <span class="input-group search-input-group">
+            <input class="form-control"
+                  type="text"
+                  name="query"
+                  placeholder="Search for books, authors, or series."
+                  id="primarysearch">
+            <span class="input-group-append">
+              <button class="btn btn-header btn-black btn-search" type="submit"
+                      value="Search">
+                <i class="icon-search"></i>
+              </button>
+            </span>
+          </span>
+        </form>
+      </div>
+      <div id="header-buttons">
+        <div class="btn-help">
+          <a class="btn btn-header btn-header-square btn-black"
+              id="showTop" href="#showTop"
+              title="Comments/Questions/Support">
+            <i class="icon-question"></i>
+          </a>
+        </div>
+                <div id="header-status-widget" user-status-widget></div>
+      </div>
+  </div>
+<div> 
+        <div id="navMenu" class="d-none d-xs-block d-sm-block cf">
+            <ul class="nav nav-tabs sw-nav-tabs">
+                <li className="nav-item sw-nav-item">
+                    <a class="nav-link sw-nav-link"
+                        href="/" title="Browse books by categories, or view our authors">
+                        Home</a>
+                </li>
+                <li className="nav-item sw-nav-item">
+                    <a class="nav-link sw-nav-link" 
+                        href="/about" 
+                        title="Learn more about Smashwords">
+                        About</a>
+                </li>
+                <li className="nav-item sw-nav-item">
+                    <a class="nav-link sw-nav-link" 
+                        href="/about/readerfaq" 
+                        title="Read our FAQ">
+                        FAQ
+                    </a>
+                </li>
+                <li className="nav-item sw-nav-item">
+                    <a class="nav-link sw-nav-link" 
+                        href="/signup" 
+                        title="Sign up with Smashwords">Sign Up</a>
+                </li>
+                <li class="nav-item sw-nav-item adult-control ml-auto">
+                    <div>
+    <a  data-toggle="dropdown"
+        class="nav-link sw-nav-link"
+        title="Erotica controls"
+    >
+        Filtering
+    </a>
+    <ul id="filterMenuMenu"   
+        class="dropdown-menu">
+                    <a type="button btn-filter"
+                class="dropdown-item active"
+                style="margin: 0px; "
+                onclick="oldsw.contentFilteringChange('no_erotica');"
+                title="Blocks erotica books from appearing on the home page and in search results."
+            >
+                Exclude erotica            </a>
+                    <a type="button btn-filter"
+                class="dropdown-item "
+                style="margin: 0px; "
+                onclick="oldsw.contentFilteringChange('no_taboo');"
+                title="Mainstream erotica is carried by most major ebook stores.  Excludes &#039;taboo&#039; erotica."
+            >
+                Include mainstream erotica            </a>
+                    <a type="button btn-filter"
+                class="dropdown-item "
+                style="margin: 0px; "
+                onclick="oldsw.contentFilteringChange('no_filtering');"
+                title="Allow all erotica, including books with &#039;taboo&#039; themes."
+            >
+                Include all erotica            </a>
+            </ul>
+</div>                </li>
+            </ul>
+        </div>
+        <div class="mobileMenu cf d-block d-sm-none d-xs-none">
+            <ul class="nav nav-tabs sw-nav-tabs">
+                <li className="nav-item sw-nav-item">
+                    <a  class="nav-link sw-nav-link"
+                        href="https://www.smashwords.com/about">About</a>
+                </li>
+                <li className="nav-item sw-nav-item">
+                    <a  class="nav-link sw-nav-link"
+                        href="https://www.smashwords.com/signup">Join</a>
+                </li>
+                <li className="nav-item sw-nav-item">
+                    <a class="nav-link sw-nav-link"
+                        href="https://www.smashwords.com/auth">Sign In </a>
+                </li>
+            </ul>
+        </div>
+
+<script>
+    $(document).ready(function() {
+        oldsw.mobileBrowseSlider();
+    });
+</script>
+<div id="mobileBrowseSlider" class="browseMenu card panel-account user-menu"
+     style="display: none; width: 200px; position: absolute; z-index: 100;">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="/" title="Home">
+                <i class="icon-home icon-fixed-width"></i>
+                Home
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="/books" title="Home">
+                <i class="icon-list icon-fixed-width"></i>
+                Classic Interface
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="/about/updates" title="Site Updates">
+                <i class="icon-bolt icon-fixed-width"></i>
+                Site Updates
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://blog.smashwords.com/" title="Visit the Smashwords blog (external)">
+                <i class="icon-bullhorn icon-fixed-width"></i>
+                Blog
+            </a>
+        </li>
+                    <li class="list-group-item">
+                <a href="/publish" title="Publish a new ebook on Smashwords">
+                    <i class="icon-upload-alt icon-fixed-width"></i>
+                    Upload an eBook
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="https://www.smashwords.com/about/how_to_publish_on_smashwords"
+                    title="How to Publish and Distribute Ebooks with Smashwords">
+                    <i class="icon-book-hand-alt icon-fixed-width"></i>
+                        Sell in the Smashwords store
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="https://www.smashwords.com/podcast" title="Smart Author Podcast">
+                    <i class="icon-volume-up icon-fixed-width"></i>
+                    Smart Author Podcast
+                </a>
+            </li>
+            <li class="list-group-item">
+            <a href="https://www.smashwords.com/about/supportfaq"
+                                 title="Read our support FAQ">
+                <i class="icon-question-sign icon-fixed-width"></i>
+                FAQ
+            </a>
+        </li>
+            </ul>
+</div>
+      </div>
+  </div>
+
+  <div id="pageBody">
+<div class="commentLink" id="commentLinkTop">
+    <form action="https://www.smashwords.com/comments/post" method="post"><div><input type="hidden" name="secToken" value="" /></div>    <div id="commentBox">
+        <div class="row">
+                <div class="col-md-7">
+                    <h2 style="color: #fff; font-face: Helvetica, sans; font-weight: bold;">FOR FASTER ANSWERS, CHECK THESE LINKS <i>BEFORE</i> YOU EMAIL US:</h2>
+                    <div class="row">
+                                                    <div class="col-md-6">
+                                <h3><strong>Authors/Publishers</strong></h3>
+                                <ul>
+                                    <li><a href="https://www.smashwords.com/about/supportfaq#works">How Smashwords works</a>
+                                        <ul>
+                                                                                            <li><a href="https://www.smashwords.com/signup/login/dashboard">Where are my ebooks?</a></li>
+                                                                                    </ul>
+                                    </li>
+                                    <li>How to format ebooks
+                                        <ul>
+                                            <li><a href="/books/view/52">Smashwords Style Guide</a></li>
+                                            <li><a href="/about/supportfaq#trouble">Troubleshooting</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="/about/supportfaq#upload">Problem uploading</a></li>
+                                    <li><a href="/about/supportfaq#isbn">ISBNs</a>
+                                                                            </li>
+                                    <li><a href="https://www.smashwords.com/distribution">Distributing via Smashwords</a>
+                                        <ul>
+                                            <li><a href="/about/supportfaq#error">How to correct retailer listing errors</a></li>
+                                            <li><a href="/about/supportfaq#Distributing">Distribution FAQs</a></li>
+                                            <li><a href="https://www.smashwords.com/distribution">How the Premium Catalog works</a></li>
+                                                                                    </ul>
+                                    </li>
+                                    <li><a href="/about/supportfaq#Royalties">Earnings &amp; payment schedules</a></li>
+                                </ul>
+                            </div>
+                                                    <div class="col-md-6">
+                                                            <h3><strong>Readers</strong></h3>
+                                                            <ul>
+                                                                    <li><a href="https://www.smashwords.com/signup/login/library">Where are my ebooks?</a></li>
+                                                                <li><a href="/about/readerfaq">How to read ebooks</a>
+                                    <ul>
+                                        <li><a href="/about/readerfaq#q_read_on_mobile_or_tablet">on my tablet or mobile device</a></li>
+                                        <li><a href="/about/readerfaq#q_read_on_computer">on my desktop or laptop computer</a></li>
+                                        <li><a href="/about/readerfaq#q_get_book_on_reader">on my ebook reader</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="/about/readerfaq#q_buying_books">How to purchase ebooks</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr size=1 noshade="noshade" />
+                    <p>
+                        Received an email from us, or wondering if something changed at Smashwords?
+                        <br/>
+                        <a href="/about/updates"><strong>Check our 'Site Updates'</strong></a> for the 
+                        latest news.
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <p>
+                        <strong>Have a question</strong> not already answered in the links at left 
+                        or on our <a href="/about/supportfaq"
+                        ><strong>FAQ</strong></a>?
+                        Ask it below.
+                    </p>
+                    <input type="hidden" name="url" id="url" value="" />
+                    <label for="commentemail">Your E-mail:</label> <input
+                        class="form-control" type="text"
+                        name="email"
+                        id="commentemail" value=""/><br/>
+                    <label for="commentsubj">Subject:</label>
+                    <input type="text"
+                           class="form-control"
+                           name="subj"
+                           id="commentsubj"
+                           value=""/><br/>
+                    <label class="sr-only" for="comment">Describe your issue</label>
+                    <textarea name="comment" id="comment"
+                              class="form-control"
+                              rows="10"></textarea><br/>
+                    <input class="btn btn-primary" id="btnSendTop" type="button"
+                           value="Send"/>
+                    <input class="btn btn-outline-secondary" id="btnCancel" type="button"
+                           value="Cancel"/>
+                </div>
+            </div>
+    </div>
+    </form>
+</div>
+    <div id="contentArea">
+
+    <div class="alert alert-danger">
+        <p><strong>
+            <i class="icon-exclamation"></i>
+            Login required
+        </strong></p>
+        <p>You must be logged in to
+            read this book.
+        </p>
+    </div>
+    
+<div class="leftSideBox">
+    <div class="left-nav-box">
+        <h1>Why Smashwords?</h1>
+    <ul style="list-style-type: disc;">
+         <li>
+            <strong>Over 765,000 ebooks from around the world—</strong>with regular sales 
+            events and thousands of ebooks added monthly, you never have to run 
+            out of things to read.
+        </li>
+        <li>
+            <strong>Support your favorite authors with your purchase—</strong>200,000            authors earn the highest royalties (up to 80% list price) through the 
+            Smashwords Store.
+        </li>
+        <li>
+            <strong>Once purchased, your books are always available from the Smashwords 
+            Library—</strong>link your Smashwords Library to your Dropbox account, or 
+            automatically email your books to your favorite epub reading device.
+        </li>
+    </ul>
+        </div>
+</div>
+
+<div id="pageContent">
+
+    <div class="uploadSection">
+        <div class="number"></div>
+        <div class="title">Login</div>
+    </div>
+
+    Already have an account with Smashwords? Login here...
+    otherwise, sign up now
+    <a href="#signupform">below</a>.<br/><br/>
+
+    <form action="https://www.smashwords.com/auth/index" method="post" id="loginForm"><div><input type="hidden" name="secToken" value="" /></div><input type="hidden" name="loginToken" value="113f3a838be9f49fde04490812865845" />
+<div style="max-width: 400px; text-align: center; margin-left: auto; margin-right: auto;">
+    <h1>
+        Sign in to your Smashwords account
+    </h1>
+            <input type="hidden" name="loginActionID" value="books"/>
+                    <input type="hidden" name="args" value="214128"/>
+            
+    <label for="loginEmail" class="sr-only">Email</label>
+    <div class="input-group form-group">
+        <span class="input-group-prepend">
+            <span class="input-group-text">
+                <i class="icon-envelope-alt icon-fixed-width"></i>
+            </span>
+        </span>
+        <input type="email" name="email" id="email" class="form-control" type="text"
+               placeholder="Email">
+    </div>
+    <label for="loginPassword" class="sr-only">Password</label>
+    <div>
+        <div class="input-group">
+            <span class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="icon-key icon-fixed-width"></i>
+                </span>
+            </span>
+            <input name="password" id="password" type="password" class="form-control"
+                placeholder="Password">
+        </div>
+        <small class="text-muted">
+            <a href="/passwordretrieval/emailreset">
+                Forgot Your Password?
+            </a>
+        </small>
+    </div>
+
+    
+    <div class="form-group">
+                    <input class="btn btn-bright btn-block" type="submit" value="Sign In"/>
+
+                </div>
+
+    <div class="mb-2">
+        Need an account to buy your next favorite book?</>
+        <div>
+            <a href="https://www.smashwords.com/signup" class="btn btn-success btn-block">
+                Sign up for a Reader Account
+            </a>
+        </div>
+    </div>
+    </div>
+</form>
+<br/><br/>
+
+    <div class="uploadSection">
+        <div class="number"></div>
+        <div class="title">
+            <a name="signupform"></a>
+            Join Smashwords
+        </div>
+    </div>
+
+    Need an account? Join Smashwords for free!<br/><br/>
+
+<div>
+        <ul>
+        <li>Join with confidence. We honor a strict no-spam
+            <a href="https://www.smashwords.com/about/privacy"
+               target="_blank">privacy policy</a> and won't sell
+            or rent
+            your email address.
+        </li>
+        <li>Your email address will not appear on the site.</li>
+    </ul>
+</div>
+
+<p>
+    <i class="icon-book"></i> <i class="icon-pencil"></i> Are you an author?
+    <a href="/publishing" class="btn btn-outline-secondary btn-sm">
+        Learn how to get your books sold on Smashwords
+    </a>
+</p>
+
+
+<form action="https://www.smashwords.com/signup/index" method="post" role="form" class="" id="signupForm"><div><input type="hidden" name="secToken" value="" /></div>
+<input type="hidden" name="signupToken" value="5cfe8ae272006d5c31b7432ee1d88af7" />
+
+
+<div class="form-row form-group">
+    <input class="form-control" type="email" 
+            name="email" id="email" size="25"
+            placeholder="Email Address"
+            value=""/>
+</div>
+
+<div class="form-row form-group">
+    <input class="form-control " type="password" name="password" id="password"
+            placeholder="Password"
+            value=""/>
+</div>
+<div  class="form-row form-group">
+    <input class="form-control " type="password" name="passwordconf"
+            id="passwordconf"
+            placeholder="Confirm password"
+            value=""/>
+</div>
+
+
+<div class="form-row form-group">
+    <input class="form-control" type="text" name="username" id="username"
+            placeholder="Username"
+            value=""/>
+    <small class="form-text text-muted">
+        Choose your username. (Keep it simple: A-Z, a-z, &amp; 0-9 only.) This 
+        is used to make the link for your profile.
+    </small>
+</div>
+
+<div class="form-row ml-1 mt-3">
+    <div class="form-group">
+        <label><strong>Terms of Service</strong></label>
+
+        <div>
+            By signing up, I accept the Smashwords
+            <a href="https://www.smashwords.com/about/tos" target="_blank">Terms of Service Agreement</a>,
+            which governs my use of the Smashwords platform and service,
+            and 
+            I accept Smashwords'
+            <a href="https://www.smashwords.com/about/privacy"target="_blank">Privacy Policy</a>,
+            which describes how Smashwords collects, uses and protects my personal
+                information.
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center m-2">
+    <input class="btn btn-primary btn-lg text-center" type="submit" value="Sign me up!" id="submit"/>
+</div>
+
+</form>
+
+</div>
+
+<div style="clear:both;"></div>
+
+      </div>
+    </div>
+    <div style="clear:both;"></div>
+    <footer class="footer">
+      <nav>
+        <ul class="inline">
+                    <li><a href="https://www.smashwords.com/about">About</a></li>
+          <li><a href="http://blog.smashwords.com">Blog</a></li>
+          <li><a href="/about/readerfaq">FAQ</a></li>
+          <li><a href="https://www.smashwords.com/about/privacy">Privacy Policy</a></li>
+          <li><a href="https://www.smashwords.com/about/tos">Terms of Service</a></li>
+          <li><a href="/publishing">Authors / Publishers</a></li>
+          <li><a href="#showTop" id="showBottom">Support</a></li>
+          <li>
+              <div>
+    <a  data-toggle="dropdown"
+        class="dropdown-toggle"
+        title="Erotica controls"
+    >
+        Filtering
+    </a>
+    <ul id="filterMenuFooter"   
+        class="dropdown-menu">
+                    <a type="button btn-filter"
+                class="dropdown-item active"
+                style="margin: 0px; "
+                onclick="oldsw.contentFilteringChange('no_erotica');"
+                title="Blocks erotica books from appearing on the home page and in search results."
+            >
+                Exclude erotica            </a>
+                    <a type="button btn-filter"
+                class="dropdown-item "
+                style="margin: 0px; "
+                onclick="oldsw.contentFilteringChange('no_taboo');"
+                title="Mainstream erotica is carried by most major ebook stores.  Excludes &#039;taboo&#039; erotica."
+            >
+                Include mainstream erotica            </a>
+                    <a type="button btn-filter"
+                class="dropdown-item "
+                style="margin: 0px; "
+                onclick="oldsw.contentFilteringChange('no_filtering');"
+                title="Allow all erotica, including books with &#039;taboo&#039; themes."
+            >
+                Include all erotica            </a>
+            </ul>
+</div>          </li>
+          <li class="d-block d-sm-none">
+              <a href="https://www.smashwords.com/books">Classic Interface</a>
+          </li>
+                        <li><a href="https://www.smashwords.com/signin">Sign In / Sign Up</a></li>
+                  </ul>
+      </nav>
+      <div class="text-center small d-none d-sm-block">
+        Copyright &copy; 2023 Smashwords, Inc. All rights reserved.
+      </div>
+      <div class="text-center small d-block d-sm-none">
+        Copyright &copy; 2023 Smashwords, Inc.
+        <div>All rights reserved.</div>
+      </div>
+          </footer>
+  </div>
+  <script>
+    $(function(){
+      oldsw.AllSmashwordRules();
+          });
+  </script>
+<script>
+  $(function() { last_req = "";
+    $( "#primarysearch" ).autocomplete({
+        minLength: 3,
+        delay: 100,
+        select: function(event, ui) {
+          window.location.href = '/books/view/' + ui.item.id;
+        },
+        source: function( request, response ) {
+            $.ajax({ dataType: "json", type : 'Get',
+                url: '/books/titlesug/' + encodeURIComponent(request.term),
+                success: function(data) { response( $.map( data, function(item) { return item["_source"]})) }, });
+            last_req = request.term; }
+    }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<div><cite>"
+        + item.title + "</cite> by " + item.contributors[0].account['display_name'] + "</div>" )
+        .appendTo( ul );
+    };
+  });
+</script>
+</body>
+</html>
